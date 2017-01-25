@@ -1,3 +1,33 @@
 \chapter{Fundamentals}
 
-Fundamentals are fundamental to success.
+\section{Algorithms}
+
+In the field of computer science, programmers use \textbf{algorithms} to solve complicated problems. What is an algorithm? An algorithm is a procedure, or series of problem-solving operations, in order to accomplish a certain task. Algorithms can range from simple operations, such as finding the smallest value in an array, to incredibly complex jobs, such as Facebook's facial recognition or Google's PageRank.
+
+\begin{algorithm}
+\caption{Finding the Maximum Value in an Array}
+\begin{algorithmic}
+\State $M \gets 0$
+\ForAll{$a_i$ in $A$} \Comment iterate through elements of $A$
+    \If{$a_i > M$}
+        $M \gets a_i$
+    \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+For example, here is an algorithm to find the largest value in an array.  We assign a value of $ 0 $ to $ M $, and then \textbf{iterate} over the contents of the array. Iteration is a computer science term, meaning we examine each element of the array one at a time. While we iterate over the array, we check each value against our existing maximum value.  If the value is greater than the largest value we've already found, then we will update our maximum to reflect that value.  Once we have iterated over all elements in the array, we are guaranteed to have found the largest value in the array.
+
+Note that this algorithm was not written in a formal programming language above, nor was it described in a programming language.  This is because an algorithm is an idea, not lines of code.  It is important to remember that before one writes code to accomplish a task, one first thinks through the problem, and comes up with a solution in words rather than code.  The language that one uses is merely the medium of communication to the computer: just as one can express the same ideas in English and French, an algorithm should be able to be implemented in Java, C/C++, Python, or any language.
+
+\section{Computational Complexity}
+
+Remember when we talked about how algorithms can range from simple to complex? How can we tell the difference between a simple algorithm and a complicated one? The answer lies in \textbf{Computational Complexity}.  Computational Complexity is a measure of how efficiently a program will run.  Although computers appear to be instant, all operations take time.  Computers are limited to a finite, yet extremely large, number of operations per second. In most modern computers, approximately $ 10^8 $ operations can be done per second.  This seems like a huge number, but in practice, we find that we quickly use it up, especially when dealing with large amounts of data.  This is why it is incredibly important to write \textbf{efficient} algorithms - a poorly written algorithm that solves a task in three days of computation time could be completed in under a second if written efficiently! Thus far, we have only developed a qualitative idea of efficiency, but computer scientists want rigor, and thus use \textbf{Big-O notation} in order to quantify the efficiency of their algorithms.
+
+\subsection{Big-O Notation}
+
+Big-O notation is the computer scientists way of describing the efficiency of an algorithm.  Think back to our first algorithm (finding the maximum in a list).  We examine each element of the array, one at a time.  Thus, if our array is of length $ n $, we will need $ n $ operations to complete our algorithm.  This is true regardless of the value of $ n $, so the operation is said to be $ O(n) $.  But what about the initial assignment? Shouldn't the algorithm be $ O(n + 1) $?  In computer science, we care about the efficiency when the data sets are \textbf{large}, and as $ n $ becomes large, the number of operations will grow at the same rate that $ n $ grows.  We also only care about the \textbf{order} of the growth, that is, $ O(cn) $ is the same thing as $ O(n) $, where $ c $ is any constant factor.
+
+An algorithm grows only as fast as its slowest operation.  For example, a nested for-loop will be $ O(n^2) $, and so another for-loop afterwards with $ O(n) $ efficiency will be negligible compared to the nested loop.  Note that an algorithm with $ O(n^2) $ efficiency is not guaranteed to run slower than one of $ O(n) $, as the faster operations may have constant terms associated with them that are very large.  However, we know for certain that for sufficiently large data set size, the $ O(n^2) $ algorithm will be slower.
+
+% add algorithm here as example
