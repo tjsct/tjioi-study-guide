@@ -26,8 +26,32 @@ Remember when we talked about how algorithms can range from simple to complex? H
 
 \subsection{Big-O Notation}
 
-Big-O notation is the computer scientists way of describing the efficiency of an algorithm.  Think back to our first algorithm (finding the maximum in a list).  We examine each element of the array, one at a time.  Thus, if our array is of length $ n $, we will need $ n $ operations to complete our algorithm.  This is true regardless of the value of $ n $, so the operation is said to be $ O(n) $.  But what about the initial assignment? Shouldn't the algorithm be $ O(n + 1) $?  In computer science, we care about the efficiency when the data sets are \textbf{large}, and as $ n $ becomes large, the number of operations will grow at the same rate that $ n $ grows.  We also only care about the \textbf{order} of the growth, that is, $ O(cn) $ is the same thing as $ O(n) $, where $ c $ is any constant factor.
+Big-O notation is the computer scientists way of describing the efficiency of an algorithm.  Think back to our first algorithm (finding the maximum in a list).  We examine each element of the array, one at a time.  Thus, if our array is of length $ n $, we will need $ n $ operations to complete our algorithm.  This is true regardless of the value of $ n $, so the operation is said to be $ O(n) $.  But what about the initial assignment? Shouldn't the algorithm be $ O(n + 1) $?  In computer science, we care about the efficiency when the data sets are \textbf{large}, and as $ n $ becomes large, the number of operations will grow at the same rate that $ n $ grows, and the $ 1 $ will become negligible.  We also only care about the \textbf{order} of the growth, that is, $ O(cn) $ is the same thing as $ O(n) $, where $ c $ is any constant factor.
 
 An algorithm grows only as fast as its slowest operation.  For example, a nested for-loop will be $ O(n^2) $, and so another for-loop afterwards with $ O(n) $ efficiency will be negligible compared to the nested loop.  Note that an algorithm with $ O(n^2) $ efficiency is not guaranteed to run slower than one of $ O(n) $, as the faster operations may have constant terms associated with them that are very large.  However, we know for certain that for sufficiently large data set size, the $ O(n^2) $ algorithm will be slower.
 
-% add algorithm here as example
+Other common runtimes include $ O(\log n) $ or $ O(n\log n) $.  A good question to ask may be, "what is the base of the logarithm in question?"  The answer is that it does not matter - the difference between two logarithms in different bases is merely a constant factor, which we disregard in our complexity analysis.
+
+\subsection{Program Speed}
+
+One of the largest differences between different programming languages is that some are faster than others.  For example, compiled languages like C and C++ are significantly faster than languages like Python.  Usually, contests will allow for different time limits based on the language used, but it is often best to choose a fast language as the increase in speed will more than compensate the difference in time allotted.
+
+Another thing to keep in mind is that most problems have an intended solution, and the size of the test cases will reflect the efficiency of the intended solution.  The following are standard guidelines for time complexity (assuming 1 second of runtime):
+
+\begin{itemize}
+    \item $ n \leq 10$: $ O(n!) $
+    \item $ n \leq 25$: $ O(2^n) $
+    \item $ n \leq 50$: $ O(n^4) $
+    \item $ n \leq 500$: $ O(n^3) $
+    \item $ n \leq 5000$: $ O(n^2) $
+    \item $ n \leq 100000$: $ O(n\log n) $
+    \item $ n \leq 1000000$: $ O(n) $
+\end{itemize}
+
+When given a problem, by looking at the size of the test cases, we can infer information about what kind of algorithm to use.  For example, consider the following problem:
+
+\textbf{Problem.} Devon has $ N $ cookies ($ 1 \leq N \leq 6000 $), each with between $ 0 $ and $ M $ chocolate chips ($ 1 \leq M \leq 1000000 $).  Devon would like to put these cookies in order, from most to least chocolate chips.  Please help Devon do so!
+
+Without solving the problem, we can guess that the intended solution will likely be $ O(n^2) $, which will give us some information regarding how we should approach this problem.  We know that this is the case as the number of cookies is bounded by $ 6000 $, which is approximately the limit for an $ O(n^2) $ solution.  Note that the number of chocolate chips does not matter, as we are only using that number as a tool for comparison.  Because we have bounded the solution to be $ O(n^2) $, we know that we are able to afford a nested for-loop to solve our problem (a runtime of $ O(n^2) $ is generally an indicator of a nested for-loop, as we run $ n $ operations $ n $ times each, for a total of $ n^2 $).
+
+What if the number of cookies was bounded by $ 1 \leq N \leq 100000 $?  In that case, we must find a faster solution - an $ O(n^2) $ solution will no longer be sufficient! In this case, we will need an $ O(n\log n) $ solution.  A logarithm in the runtime usually denotes a recursive or binary search solution, topics that we will discuss later in this guide.  The correct solution for this problem is to use a sort, and there are many different ways to accomplish this task.  We will discuss sorts more expansively, as well as the runtimes, advantages, and disadvantages of each sort, in a later section.
