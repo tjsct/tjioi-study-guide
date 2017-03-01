@@ -1,0 +1,156 @@
+\chapter{Basic Algorithms}
+
+Now that we've discussed some of the tools programmers use to write algorithms, lets discuss the actual algorithms!  Coders use many different techniques in order to solve problems, and many of the basic methods will be discussed in this section.
+
+\section{Brute Force}
+
+Brute force is, to be put simply, exactly what it sounds like.  In some problems, when the number of possibilities is sufficiently small, the best option may be to check each case individually.  This is known as \textbf{brute force}, as we make no attempt to reduce the possibilities that we must check.  For example, consider the following problem:
+
+\begin{Problem}
+Larry would like to visit $ N $ cities ($1 \leq N \leq 8$).  Given the distance between any two cities, determine the shortest possible path that Larry must take in order to visit every city exactly once.
+\end{Problem}
+
+As an initial approach to this problem\footnote{Experienced readers may notice that this is the Traveling Salesman Problem, a very difficult problem to solve efficiently for large $ N $.  However, in this case, we are dealing with very small values of $ N $ to emphasize the use of the brute force technique.}, we would generate each different permutation of the $ N $ cities (such as 1, 2, 4, 5, 6, 7, 8, 3) and then determine the length of the path if we were to travel to those cities in that order, keeping track of the minimum path length.  The number of ways to choose the first city to visit is given by $ N $, the second by $ N - 1 $, the third by $ N - 2 $, and so on, and so the total number of ways to order $ N $ cities is given by $ N! $, the factorial of $ N $.  The largest value of $ N $ possible is $ N = 8 $, and so the most number of cases to check would be $ 8! = 40320 $.  This number is well less than $ 10^8 $, the number of operations per second that a computer is capable of performing, and so using a brute force solution to this problem is sufficient.
+
+Note that in many cases, a brute force solution will \textbf{not} be fast enough - prompting us to learn and develop more efficient algorithms.  However, a brute force approach may not be a bad starting point.  It is often a good idea to first attempt a problem using a brute force approach, and perform an analysis on whether or not it is sufficient to solve the problem within the time limit.  If it works (like the example above), then the problem is solved; otherwise, it may provide a good basis for further refinement.  It is possible that the desired solution is merely the brute force approach with some minor optimizations!
+
+\section{Greedy Algorithm}
+
+The Greedy Algorithm, while called an algorithm, is more of a strategy.  The premise of the strategy is as follows: in order to find the best solution, at each step, we will choose the option that appears to best lead us in the right direction.  The assumption made by the Greedy Algorithm is that if, at each intermediate step, we make the best possible choice at that step, we will arrive at the best overall result.
+
+This seems like a fairly reasonable strategy, as by following the best choice at each step, we should be led in the right direction.  For example, consider this problem:
+
+\begin{Problem}
+Kevin has $ \$N $ ($ 1 \leq N \leq 1000 $) and would like to make change with the least number of bills possible.  If there are bills worth $ \$1 $, $ \$5 $, $ \$10 $, $ \$20 $, and $ \$100 $, determine the least number of bills needed to make exact change.
+\end{Problem}
+
+The optimal strategy here would be to first take as many $ 100 $-dollar bills as possible, then $ 20 $-dollar bills, then $ 10 $-dollar bills, and so on.  We can see this is true as each increasing bill amount is a multiple of the previous amount.  Therefore, if we have enough bills of a denomination to "trade in" for one bill of the next denomination, it will always reduce the total number of bills.  Suppose we begin with $ N $ $ 1 $-dollar bills.  We will trade in as many as possible for the largest denomination possible.  Using the remaining bills, we will trade in as many as possible for the next largest denomination.  We will repeat this process until we can no longer do so, and we have arrived at our solution.  Note that this method only works when increasing bill denominations are multiples of the previous denomination.  For example, if one only had bills of $ \$1 $, $ \$3 $, and $ \$ 4 $, and one wished to get change for $ \$6 $, the optimal solution would be $ 2 $ bills of $ \$3 $, whereas the greedy solution would call for one $ 4 $-dollar bill and two $ 1 $-dollar bills, for a total of $ 3 $ bills.
+
+As demonstrated in that example, the greedy solution will not always produce the right answer.  One must think carefully to determine if the problem they are facing is one that can be solved using a greedy strategy.  One of the most famous problems whose solution takes advantage of the greedy algorithm is the \textit{Minimum Spanning Tree} problem, which we will discuss further in a later chapter.  The major drawback of the greedy algorithm is its short-sightedness: imagine a chess player employing the greedy algorithm.  The player will never sacrifice a piece, or move a piece backwards, as it makes the choice that is best specifically in that turn, and neither of those events are beneficial when viewed in the context of only that one turn.  In a complicated problem, such as chess, it is often the case that taking a step backwards may result in a better end result.
+
+In practice, the greedy algorithm is often used to find approximate solutions to a difficult problem.  By taking a greedy approach, one can find an answer that is close to the actual answer, in order to provide a starting point for further optimization.
+
+\section{Recursion}
+
+Recursion is a strategy that we can use in order to help us solve complicated problems.  The idea of recursion involves solving a larger problem by breaking it down into smaller, self-similar problems.  Recursion is most useful when the problem one is trying to solve depends on subproblems that are equivalent to the original.  For example:
+
+\begin{Problem}
+Given $ N $ ($ 1 \leq N \leq 100 $), determine the $ N $th Fibonnaci number, where the $N$th Fibonnaci number is defined as the sum of the $(N-1)$th and $(N-2)$th Fibonnaci number.
+\end{Problem}
+
+We can employ the use of a recursive solution in order to solve this problem, outlined below.
+
+\begin{algorithm}[H]
+\caption{Fibonnaci}
+\begin{algorithmic}
+
+\Function{Fibonnaci}{$n$}
+    \If{$n = 1$ or $n = 2$}
+        \State \Return 1
+    \Else
+        \State \Return \Call{Fibonnaci}{$n-1$} + \Call{Fibonnaci}{$n-2$}
+    \EndIf
+\EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
+All recursive solutions must have two parts: the base case and the recursion.  The base case specifics where to stop - without a base case, the recursion will go on forever (or at least until the computer runs out of memory)!  In this solution the base case is when $ N = 1 $ or $ N = 2 $.  The recursive part is the bulk of the solution.  Each call to the function calls the function again with a smaller argument, until it eventually becomes $ 1 $ or $ 2 $.  Because the Fibonnaci problem can be broken down into smaller, self-similar pieces, recursion is a good choice to solve this problem.
+
+
+\subsection{Recursive search}
+% begin copy paste (please edit)
+We can also use recursion to generate and explore states. If from any given state in a problem, we can reach other states, then we can simply recur on the states that we generated to explore all possible states. This is known as a depth-first search, something that will be discussed later.
+
+This idea can be represented by a search tree. The root node of the tree is the state from which we start. Then, its children are the other states that can be generated from it, and so on. We'll go over a few examples to demonstrate how we can use this idea to solve problems.
+
+
+\subsection{Permutations}
+
+\begin{Problem}
+Given an integer $n$, print out all possible permutations of the integers $1..n$.\footnote{In Python, you can use \texttt{itertools.product(range(n))}!} For example, if $n=3$, the permutations would be (1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1).
+\end{Problem}
+
+\noindent This is easy to solve for a fixed value of $n$, such as $n=3$, just by writing $n$ for-loops. But we can't exactly output $n$ for-loops. Instead, we can build each permutation of length 1. We can then recur on those results to build permutations of length 2, and so on.
+
+
+% TODO: insert image for search tree
+
+\begin{algorithm}[H]
+\caption{Generating permutations}
+\begin{algorithmic}
+
+\State $used \gets \{false, false, \ldots, false\}$
+\Function{GeneratePermutations}{depth, prefix}
+    \If{$depth = n$}
+        \State \Call{print}{prefix}
+        \State \Return
+    \EndIf
+    \For{$i = 1..n$}
+        \If{not $used[i]$}
+            \State $used[i] \gets true$
+            \State \Call{GeneratePermutations}{$depth + 1$, $prefix \oplus i$}
+            \State $used[i] \gets false$
+        \EndIf
+    \EndFor
+\EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Recursion stack}
+When we perform recursion, we are implicitly using a stack: the call stack. This stores the arguments to functions and their local variables. We can transform any function that uses recursion to a function that does not, simply by keeping track of the relevant state ourselves rather than letting the programming language do it for us. One reason we might want to do this is that programming languages limit the maximum recursion depth. So one advantage of explicitly using a stack is that you can "recurse" more deeply. However, expressing programs in this way may be less clear than plain recursion.
+
+When performing graph traversal, we can use an explicit stack to keep track of nodes to visit rather than using recursion. One of the downsides of this, however, is that performing an inorder or postorder traversal of a graph is not as simple. This is something we will need in our algorithm for topological sort below.
+
+\section{Searches}
+
+Searching is the act of finding an object, if it exists (and informing us if it does not) within a data structure, most commonly an array.  We will discuss two kinds of searches, each with their own advantages and disadvantages.  Searches are also useful in graph theory, and we will discuss the associated searches in a later chapter.
+
+\subsection{Linear Search}
+
+The linear search is the most straightforward way of searching an array.  We iterate over each element of the array, and check to see if it is the element that we want.  As we have to check every element of the array, linear search runs in $ O(n) $.  Although linear search is not the most efficient method, it will always work as each element is checked.
+
+\subsection{Binary Search}
+
+Binary search is a more efficient method of searching.  Consider how one would find a word in a dictionary, for example, "cat".  We would flip to the middle of the dictionary, and examine words beginning with "m".  Because "cat" comes alphabetically before "m", we do not even have to search anywhere after "m", and can recursively repeat the process on the half of the dictionary that comes before "m".  Note that this relies on a key assumption: the data must already be sorted.  We can use the information that sorted data provides us to eliminate half the data at each step.  The number of operations that binary search needs is equivalent to how many times we can cut the data in half, until there is only one object left.  This is equivalent to the logarithm in base two of the size of the data, so the runtime of binary search is $ O(\log n) $.
+
+\section{Sorts}
+
+Sorting is a fundamental problem in computer science: one that is easy to understand and solve, but not as easy to solve \textit{efficiently}. Formally, the objective of a sorting algorithm is to rearrange the items in an array so that they are arranged in a well-defined order. Those items can be anything: numbers, strings, and even custom data types, so long as we have some way of determining how to order them.
+
+% reword
+In order to sort an array, we must first define how we intend to compare two objects in the array.  It doesn't make any sense to ask if Apple or Orange is greater until we state what we mean by "greater".  Different languages implement this differently: for example, in Java, we can determine the order in which to sort elements using the \texttt{Comparable} or \texttt{Comparator} interfaces.  These interfaces force us to write a method which compares an object with another, so that any object in the array must be "greater than", "less than", or "equal to" another object, which we define within the method.  The sorting algorithms we analyze in this section will be similar in that they can be performed using only comparison operations; thus, we refer to them as \textit{comparison-based sorts}.
+
+With only a comparison operation, we can verify that an array is sorted.
+
+\begin{algorithm}[H]
+\caption{}
+\begin{algorithmic}
+\Function{CheckSort}{A}
+    \For{each $a_i$ in $A$}
+        % probably better to do a_i > a_{i+1}
+        \If{$i > 0$ and $a_{i-1} > a_i$}
+            \State \Return false
+        \EndIf
+    \EndFor
+    \State \Return true
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Selection sort}
+
+The first algorithm we will consider is quite simple. First, we find the smallest element in an array; then, we put it into the first position. Next, we find the smallest element among the remaining elements, and put it into the second position. We continue until we have sorted the entire array.
+
+We need some way of quantifying the performance of this algorithm, so we will count the number of compares and exchanges performed. We make $n-1$ total passes through the array, each of which requires one exchange. However, we make $N-i-1$ compares for $i \in [0, n-1]$, so the number of compares is approximately $N^2/2$. Note that the number of operations remains constant, even if the input data is already sorted!  The selection sort algorithm is $ O(n^2) $.
+
+
+\subsection{Insertion sort}
+
+Next, we consider another algorithm that is closer to how you might sort in real life. We loop through each of the items in an array, inserting each of them into the correct position among the items before it that have already been sorted. Coding insertion sort does require a bit of care.
+
+If the array is already sorted, we only need to perform $n-1$ comparisons and $0$ exchanges total! However, in the worst case, we may need to perform $i$ comparisons and exchanges for $i \in [0, n-1]$. In total, we will perform approximately $N^2/2$ compares and exchanges.  Insertion sort is also $ O(n^2) $.
+

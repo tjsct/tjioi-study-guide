@@ -1,0 +1,149 @@
+\chapter{Input/Output}
+
+The following are some I/O examples in various languages to get you started. All programs read in a number $N$ from the first line, proceed to read in $N$ more numbers from the second line, and print their sum.
+
+\section{Java}
+
+\lstset{language=Java}
+
+Here we use a \texttt{BufferedReader} instead of a \texttt{Scanner} because it's faster and more reliable in the contest environment.
+
+\subsection{Standard I/O}
+
+\begin{mylstlisting}
+import java.util.*;
+import java.io.*;
+
+class sum {
+    public static void main(String[] args) throws IOException {
+        BufferedReader f = new BufferedReader(new InputStreamReader(System.in));
+	    int N = Integer.parseInt(f.readLine()); // read whole line
+	    int[] num = new int[N];
+	    StringTokenizer st = new StringTokenizer(f.readLine()); // split line by white space
+    	for(int k = 0; k < N; ++k) {
+    		num[k] = Integer.parseInt(st.nextToken());
+    	}
+    	int sum = 0;
+    	for(int k = 0; k < N; ++k) {
+    		sum += num[k];
+    	}
+    	System.out.println(sum);
+    	System.exit(0);
+    }
+}
+\end{mylstlisting}
+
+\subsection{File I/O}
+
+\begin{mylstlisting}
+import java.util.*;
+import java.io.*;
+
+class sum {
+    public static void main(String[] args) throws IOException {
+        BufferedReader f = new BufferedReader(new FileReader("sum.in"));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sum.out")));
+	    int N = Integer.parseInt(f.readLine()); // read whole line
+	    int[] num = new int[N];
+	    StringTokenizer st = new StringTokenizer(f.readLine()); // split line by white space
+    	for(int k = 0; k < N; ++k) {
+    		num[k] = Integer.parseInt(st.nextToken());
+    	}
+    	int sum = 0;
+    	for(int k = 0; k < N; ++k) {
+    		sum += num[k];
+    	}
+    	out.println(sum);
+    	out.close(); // don't forget this!
+    	System.exit(0);
+    }
+}
+\end{mylstlisting}
+
+\section{C++}
+
+\lstset{language=C++}
+
+Here we use C++-style I/O. You may alternatively use C-style I/O. 
+
+\subsection{Standard I/O}
+
+The first two lines are to speed up input. They are considered bad coding practice outside of the contest environment but are essential to get your times down if I/O is large. Note, however, that if you unlink with C-style I/O, you may not use \texttt{scanf()} and \texttt{printf()}, etc.
+
+\begin{mylstlisting}
+#include <iostream>
+#include <fstream>
+
+int num[100005];
+
+int main() {
+    std::ios_base::sync_with_stdio(0); // unlink C-style I/O
+    std::cin.tie(0); // unlink std::cout
+	std::cin >> N;
+	for(int k = 0; k < N; ++k) {
+		std::cin >> num[k];
+	}
+	int sum = 0;
+	for(int k = 0; k < N; ++k) {
+		sum += num[k];
+	}
+	cout << sum << "\n";
+	return 0;
+}
+\end{mylstlisting}
+
+\subsection{File I/O}
+
+\begin{mylstlisting}
+#include <iostream>
+#include <fstream>
+
+int num[100005];
+
+int main() {
+	std::ifstream fin("palpath.in");
+	std::ofstream fout("palpath.out");
+	fin >> N;
+	for(int k = 0; k < N; ++k) {
+		fin >> num[k];
+	}
+	int sum = 0;
+	for(int k = 0; k < N; ++k) {
+		sum += num[k];
+	}
+	fout << sum << "\n";
+	fin.close();
+	fout.close(); // don't forget this!
+	return 0;
+}
+\end{mylstlisting}
+
+\section{Python}
+
+\lstset{language=Python}
+
+\subsection{Standard I/O}
+
+\begin{mylstlisting}
+n = int( input() ) # input() grabs the whole line
+nums = input().strip() # removes extra spaces at beginning and end, also \n
+nums = nums.split() # splits at the spaces to turn it into an array of strings
+nums = [int(stng) for stng in nums] #turn them into ints
+print( sum( nums ) )
+\end{mylstlisting}
+
+\subsection{File I/O}
+
+\begin{mylstlisting}
+file = open('input.txt', 'r') # r for read
+out = open('output.txt', 'w') # w for write
+
+n = int(file.readline().strip()) # strip() isn't always necessary, but it's a good habit
+nums = file.readline().strip()
+nums = nums.split() # splits at the spaces to turn it into an array of strings
+nums = [int(stng) for stng in nums] #turn them into ints
+out.write( str( sum( nums ) ) + '\n' ) # str() and + are necessary because write() takes only a single string
+
+file.close()
+out.close()
+\end{mylstlisting}

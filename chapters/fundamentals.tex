@@ -4,13 +4,13 @@
 
 In the field of computer science, programmers use \textbf{algorithms} to solve complicated problems. What is an algorithm? An algorithm is a procedure, or series of problem-solving operations, in order to accomplish a certain task. Algorithms can range from simple operations, such as finding the smallest value in an array, to incredibly complex jobs, such as Facebook's facial recognition or Google's PageRank.
 
-\begin{algorithm}
+\begin{algorithm}[H]
 \caption{Finding the Maximum Value in an Array}
 \begin{algorithmic}
 \State $M \gets 0$
 \ForAll{$a_i$ in $A$} \Comment iterate through elements of $A$
     \If{$a_i > M$}
-        $M \gets a_i$
+        \State $M \gets a_i$
     \EndIf
 \EndFor
 \end{algorithmic}
@@ -32,6 +32,30 @@ An algorithm grows only as fast as its slowest operation.  For example, a nested
 
 Other common runtimes include $ O(\log n) $ or $ O(n\log n) $.  A good question to ask may be, "what is the base of the logarithm in question?"  The answer is that it does not matter - the difference between two logarithms in different bases is merely a constant factor, which we disregard in our complexity analysis.
 
+In a more theoretical sense, one can determine the Big-O efficiency of an algorithm mathematically.  Given an algorithm, we can write some function, which takes the size of the data as input, and outputs the number of operations.  For example, consider an algorithm which loops over an array twice, then, for \textbf{each} element of the array, loops over the \textbf{entire} array three times, then loops over the first three terms of the array.  Then, assuming the length of our array is given by $ n $ (where $ n > 3 $), our function is given by $ f(n) = 2n + 3n^2 + 3 $.  We now define the Big-O efficiency of the function, $ O(g(n)) $, to be a function satisfying:
+
+$$ \frac{|f(n)|}{|g(n)|} = M $$
+
+\noindent where $ M $ is a finite, positive, non-zero value.  In other words, $ f(n) $ grows on the order of $ g(n) $.  Choosing $ g(n) = n^2 $ will result in a value of $ 3 $ for M, and so the function $ f(n) $ and the associated algorithm is said to be of order $ O(n^2) $.  Note that this choice of $ g(n) $ is not unique, but is the "simplest" choice.  This process is similar to a leading term test, often used when taking the limit of a rational function in BC Calculus, in which the term that grows fastest "dominates" the rest as the independent variable becomes large.
+
+As an example, consider the following algorithm:
+
+\begin{algorithm}[H]
+\caption{Finding Pairs}
+\begin{algorithmic}
+\State $ X \gets 0 $
+\ForAll{$a_i$ in $A$}
+    \ForAll{$a_j$ in $A$ and $ j > i $}
+        \If{$a_i = a_j$}
+            \State $X \gets X + 1$
+        \EndIf
+    \EndFor
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+What is the efficiency of the algorithm?  We can see that there is one loop that iterates over the entire array $ A $, and another loop that iterates over all the elements after the first element chosen.  If both loops were over the entire array, then it would clearly be $ O(n^2) $, but in this case, the inner loop does not iterate over the entire array each time!  From this analysis, we can see that the efficiency of the program seems to be faster, as looping over the entire array in both loops means that we compare every pair twice, as for any $ i $ and $ j $, we will check $ i = j $ and $ j = i $, but looping the way we do in this algorithm ensures we check each pair only once.  This means that our program only needs half the number of operations as an $ O(n^2) $ algorithm!  Unfortunately, as we have previously discussed, when using Big-O analysis, we discard constant factors and only care about the order of the growth.  Despite only needing $ \frac{1}{2}n^2 $ operations, the number of operations still grows as $n^2$.  Thus, this algorithm is also $ O(n^2) $.
+
 \subsection{Program Speed}
 
 One of the largest differences between different programming languages is that some are faster than others.  For example, compiled languages like C and C++ are significantly faster than languages like Python.  Usually, contests will allow for different time limits based on the language used, but it is often best to choose a fast language as the increase in speed will more than compensate the difference in time allotted.
@@ -50,7 +74,9 @@ Another thing to keep in mind is that most problems have an intended solution, a
 
 When given a problem, by looking at the size of the test cases, we can infer information about what kind of algorithm to use.  For example, consider the following problem:
 
-\textbf{Problem.} Devon has $ N $ cookies ($ 1 \leq N \leq 6000 $), each with between $ 0 $ and $ M $ chocolate chips ($ 1 \leq M \leq 1000000 $).  Devon would like to put these cookies in order, from most to least chocolate chips.  Please help Devon do so!
+\begin{Problem}
+Devon has $ N $ cookies ($ 1 \leq N \leq 6000 $), each with between $ 0 $ and $ M $ chocolate chips ($ 1 \leq M \leq 1000000 $).  Devon would like to put these cookies in order, from most to least chocolate chips.  Please help Devon do so!
+\end{Problem}
 
 Without solving the problem, we can guess that the intended solution will likely be $ O(n^2) $, which will give us some information regarding how we should approach this problem.  We know that this is the case as the number of cookies is bounded by $ 6000 $, which is approximately the limit for an $ O(n^2) $ solution.  Note that the number of chocolate chips does not matter, as we are only using that number as a tool for comparison.  Because we have bounded the solution to be $ O(n^2) $, we know that we are able to afford a nested for-loop to solve our problem (a runtime of $ O(n^2) $ is generally an indicator of a nested for-loop, as we run $ n $ operations $ n $ times each, for a total of $ n^2 $).
 

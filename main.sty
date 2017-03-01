@@ -30,9 +30,10 @@
 
 \usepackage[secthm,mdthm]{evan}
 
-\lhead{TJIOI Study Guide}
+\lhead{TJ IOI Study Guide}
 
 \usepackage{graphicx}
+\graphicspath{ {images/} }
 
 \usepackage{color}
 
@@ -112,7 +113,7 @@
     showstringspaces=false,
     showtabs=false,                  
     tabsize=4,
-    basicstyle=\ttfamily\small,
+    basicstyle=\ttfamily\footnotesize,
     frame=single,#1}}
   {\endminipage}
 }
@@ -134,3 +135,12 @@
   \fontdimen7\font=0.1em% extra space
   \hyphenchar\font=`\-% allowing hyphenation
 }{\par}
+
+\newenvironment{Problem}
+{
+    \textbf{Problem.}
+}
+{
+}
+
+\renewcommand{\baselinestretch}{1.15}
