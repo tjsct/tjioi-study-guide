@@ -2,7 +2,7 @@
 
 Simply put, a \textbf{data structure} is a way of organizing data in a structured way so that it can be processed efficiently. In the context of programming contests, this data generally consists of integers, and in some cases, floating point numbers and strings. Good knowledge of data structures is essential to being able to solve a problem in the fastest amount of time possible.
 
-In all likelihood, you won't ever have to implement simple data structures, because most programming languages' standard libraries will include efficiently written implementations. However, it's important to learn about how data structures work so you understand their performance characteristics, and which one will work best in a given situation. Of course, this knowledge will also help when you need to write your own, more complex data structures.
+In all likelihood, you won't ever have to code elementary data structures because the standard libraries of most programming languages already include implementations of them. However, it's important to understand how data structures work so you understand their performance characteristics and can decide which one will work best in a given situation. Of course, this knowledge will also help you when you need to write your own, more complex data structures.
 
 % should we have a section on integer/float data types?
 
@@ -10,7 +10,7 @@ In all likelihood, you won't ever have to implement simple data structures, beca
 
 \subsection{Arrays}
 
-Arrays are the most fundamental type of data structure, implemented at the language level. Essentially, an array allows us to store a sequence of multiple values. When first learning programming, when we might otherwise use one variable for every value in a sequence, arrays provide a more convenient way to represent that sequence.
+Arrays are the most fundamental type of data structure, implemented at the language level. Essentially, an array allows us to store a sequence of multiple values. For example, instead of using one variable for every value in a sequence, arrays provide a more convenient way to represent and access that sequence.
 
 Arrays are created by reserving a fixed block of memory. Because of this, they have two important properties. The first is that the size of an array cannot be changed once it is created: once we've requested some amount of memory from the operating system, we cannot change its size. The second is that just as we can access any memory address in constant time, we can query any element of an array in constant time. Because the elements of an array are stored contiguously, however, it is slightly faster to access elements in sequential rather than random order, due to caching by the CPU.
 
@@ -20,7 +20,7 @@ Arrays are created by reserving a fixed block of memory. Because of this, they h
 
 Because arrays have a fixed size, we need to know the number of elements we'll have in an array before we create it. This may not necessarily be a problem in programming contests, where we are given limits on the input size in the problem statement, but in some cases, we may need to create an array that isn't limited to a fixed size.
 
-A \textbf{dynamic array}, or a resizable array, does exactly what its name implies: it resizes the array every time more capacity is needed. Resizing involves allocating a new array, then copying the elements from the old array into the new one. However, the key to maintaining efficiency is that every resize operation ...
+A \textbf{dynamic array}, or a resizable array, does exactly what its name implies: it resizes the array every time more capacity is needed. Resizing involves allocating a new array and then copying the elements from the old array into the new one. However, the key to maintaining efficiency is that every resize operation ...
 
 % TODO: rewrite into above paragraph
 When an ArrayList is created, it will store more space than is needed. So for example if I wanted to store the names of all of my friends and had 13 of them, when I create an ArrayList while it will appear to me as if there are only 13 slots, the library running in the backend will actually create 16 slots and leave the extra ones as null (the smallest power of 2 greater than the length I ask for). Now, when I want to add a new friend I have made, the ArrayList will increment its displayed size and turn one of the next null slots into a person. It can conversely do the opposite for removing a friend.
@@ -32,7 +32,7 @@ In this way, ArrayLists allow for $O(1)$ addition and subtraction for most cases
 
 A list is a set of items that have some way of sorting themselves linearly. For example, if I was creating a list of numbers, they would be sorted by size yielding something such as 0, 1, 2, etc. In computer science, each item in a list is called a node. Each node has its value and a pointer, which references its neighbors. A good way to visualize this is a bunch of people in a line. Each person in the line knows what their name is and can also ask either of their neighbors for their name, but cannot directly ask anyone else.
 
-So why do people use linked lists? Well ArrayLists are very effective in removing things from the end, but if items start being removed from the beginning then the data structure quickly becomes very messy. In addition, removing from the middle requires a lot of shifting as mentioned above. However, linked lists can add and remove in $O(1)$ time as a node simply has to change its pointer. For example, in the case of the line of people where person A is in front of B who is in front of C, if person B was to leave, then person C would simply treat the person in person A as the person in front of them instead of person B. However, the drawbacks of linked lists are that they take $O(n)$ time in retrieving data as each node must be iterated through before the target can be found.
+So why do people use linked lists? Well ArrayLists are very effective in removing things from the end, but if items start being removed from the beginning then the data structure quickly becomes very messy. In addition, removing from the middle requires a lot of shifting as mentioned above. However, linked lists can add and remove in $O(1)$ time as a node simply has to change its pointer. For example, in the case of the line of people where person A is in front of B who is in front of C, if person B was to leave, then person C would simply treat the person in person A as the person in front of them instead of person B. However, the drawbacks of linked lists are that they take $O(n)$ time in retrieving data as each node must be iterated through before the target can be found. 
 
 % mainly useful for joining in O(1)
 % also for guaranteed, non-amortized O(1) operations
@@ -56,7 +56,7 @@ A deque, pronounced as deck, is a combination of a queue and a stack. Essentiall
 
 \section{Trees}
 
-A \textbf{tree} is a non-linear data structure, consisting of a number of \textbf{nodes}, which are each associated with a value. A node can have multiple \textbf{children}, which are drawn below the node; if the node has no children, it is a \textbf{leaf node}. Correspondingly, each node in a tree also has a parent, except for the topmost node, which is the \textbf{root node}. When a tree is drawn, the root is placed at the top, with arrows pointing to its child nodes below. Figure \ref{fig:tree0} is an example of a tree. 
+A \textbf{tree} is a non-linear data structure consisting of a number of \textbf{nodes} which are each associated with a value. A node can have multiple \textbf{children}, which are drawn below the node; if the node has no children, it is a \textbf{leaf node}. Correspondingly, each node in a tree also has a parent, except for the topmost node, which is the \textbf{root node}. When a tree is drawn, the root is placed at the top, with arrows pointing to its child nodes below. One important thing to note about trees is that each node can be thought of as the root of a subtree. This property lends many tree-related algorithms to make use of recursion, which will be explained more in Section \ref{recursion}. Figure \ref{fig:tree0} is an example of a tree. 
 
 \begin{figure}[h]
 \centering
@@ -89,7 +89,7 @@ A \textbf{tree} is a non-linear data structure, consisting of a number of \textb
 \end{figure}
 
 
-The tree has various properties. The \textbf{height} of a tree (also called depth) is the number of links needed to get from the root to the node furthest away from the root. For example, in the example tree, “h” (or “i”) is furthest away from the root. If we trace the path between the root and “h”, [trace: a to d, d to f, f to h], 3 links are made so the height is 3. The width of the tree is the longest path from one leaf to another (without crossing a path more than once). In this tree, the path is from "e" to "h" (or "i") and the width is 5. 
+Trees have various useful properties. The \textbf{height} of a tree (also called depth) is the number of links needed to get from the root to the node furthest away from the root. For example, in the example tree, “h” (or “i” or "j") is furthest away from the root. If we trace the path between the root and “h”, [trace: a to d, d to f, f to h], 3 links are made so the height is 3. The width of the tree is the longest path from one leaf to another (without crossing a path more than once). In this tree, the longest path is from "d" to "h" (or "i" or "j") and the width is 5. 
 
 Another property is the \textbf{internal path length}. To calculate the internal path length, we add up the path lengths from the root to each node. For the example tree, the path from the root to itself is 0. From the root to its immediate children is 1. If we do this for all the nodes and sum the paths, the internal path length is 14. 
 
@@ -127,22 +127,21 @@ Generally, in a tree each node can have any number of children. A \textbf{binary
 In the tree above, “a” is the root, and “e”, “g”, “h”, and “i” are leaf nodes because they have no children. 
 
 % todo: define better
-A \textbf{complete binary tree} is a binary tree in which every node has two children, except for the nodes on the lowest level.
+A \textbf{complete binary tree} is a binary tree in which every node has two children (except the leaves of course) and all leaves are found at the same depth. You can think of complete binary trees as being "filled up" because there's no more space to add nodes without increasing the height.
 
 
 
 \subsection{Binary Search Trees}
 
-A \textbf{binary search tree} is a tree with an ordering constraint that makes it amenable to searching. Suppose we have some node $X$ with a value $v_X$. Then, for any node $C$ that is a child of $X$, if $C$ is in the left subtree of $X$, then $v_C < v_X$. Otherwise, if $C$ is in the right subtree of $X$, then $v_C \geq v_X$.
+A \textbf{binary search tree}, or BST, is a type of binary tree that has been structured in a specific way to make it amenable to searching. Suppose we have some node $X$ with a value $v_X$. Then, for any node $C$ with a value of $v_C$ that is a child of $X$, if $C$ is in the left subtree of $X$, then $v_C < v_X$. Otherwise, if $C$ is in the right subtree of $X$, then $v_C \geq v_X$. In simpler terms, everything in the left subtree of a given node has a lower value, and everything in the right subtree has a larger or equal value.
 
 %Each node must be greater than each in its left subtree and less than or equal to every node in its right subtree.
-To use a BST, we need to impose some kind of ordering on the elements stored. Typically with characters and strings, a lexicographic comparison is made. Because there is no definite bound on the number of elements of the tree, we typically create our own object or structure to represent the tree with left and right pointers.
+To use a BST, we need to impose some kind of ordering on the elements that we store. Typically with characters and strings, a lexicographic comparison is made. Because there is no definite bound on the number of elements of the tree, we typically create our own object or structure to represent the tree with left and right pointers.
 
-When searching for an element in the tree, we can employ a binary search. First, we compare the value we're looking for with the value of the root node. Then, we select either the left or the right subtree based on the result of the comparison, and we recurse. If we assume that with every recursive call, we cut the number of elements in half --- as with binary search --- then we can find the element we desire in $O(\log{N})$ time.
+When searching for an element in the BST, we can employ a binary search. First, we compare the value we're looking for with the value of the root node. Then, we select either the left or the right subtree based on the result of the comparison, and we perform the same comparison. This continues until we either find the value we're looking for or reach a leaf node and conclude the value isn't present. If we assume that with every iteration we cut the number of elements in half --- as with binary search --- then we can find the element we desire in $O(\log{N})$ time. This is better than the $O(N)$ time complexity of the list structures especially as the number of elements gets large.
 
 Note that this time complexity is only for a well balanced tree. For example, if the tree's elements are strictly increasing, then the tree becomes more like a LinkedList structure (therefore $O(N)$ in the worst case).
 
-[Note that a binary tree is different from a binary search tree (which is explained later) because the binary tree is not organized based on the values of the nodes.]
 
 Below is an example of a Binary Search Tree:
 \begin{center}
@@ -181,11 +180,18 @@ Below is an example of a Binary Search Tree:
 
 
 \section{Sets}
+
 \subsection{Ordered Sets}
-A set is a data structure that can be thought of as a bundle of unique elements. There are two distinct types of sets: one that retains order and one that does not. If a set has order, it is typically ordered in the form of a tree. In Java this is referenced as an TreeSet and in C++ it is can be invoked by std::set. In an ordered set, look up is typically $O(\log n)$ where $N$ is the total number of elements in the set. The logarithm comes from the nature of the tree being used to keep track of the ordering of the set. Below you can see an example of an ordered set in Java being represented through a tree-based structure.
+
+A set is a data structure that can be thought of as a bundle of unique elements. There are two distinct types of sets: one that retains order and one that does not. If a set has order, it is typically ordered in the form of a tree. In Java this is referenced as an TreeSet and in C++ it is can be invoked by std::set. In an ordered set, searching for an element is typically $O(\log n)$ where $N$ is the total number of elements in the set. The logarithm comes from the nature of the tree being used to keep track of the ordering of the set. Below you can see an example of an ordered set in Java being represented through a tree-based structure.
+
 \includegraphics[scale=0.5]{treeset.png}
+
+
 \subsection{Unordered Sets and Hashing}
-A set without ordering is typically faster because of a wide-used trick known as Hashing. In brief, Hashing is a way of storing items so they can be found later on efficiently. The items are stored in a hash table at a position specified by a hash code. A hash code is an integer value calculated from any given data value or object, and is used to determine where a value should be stored in a hash table. This hash code value is generated by a hash function, a function that will always produce the same hash code given a specific data value or object. If two objects produce the same hash code, this is known as a collision. A collision is typically handled by creating buckets that contain LinkedLists. If there is a collision and there is intent to do a look up, the run time would increase as the program would still have to go through all of the elements in the bucket. Unordered Sets use this trick to attain their $O(1)$ look up. In Java unordered sets are referenced as HashSets and in C++ they can be invoked by std::unordered\_set. In the representation below, you can see the hash table for this particular unordered set (notice the collision at index 0).
+
+A set without ordering is typically faster because of a widely-used trick known as Hashing. In brief, Hashing is a way of storing items so they can be found later on efficiently. The value itself is used to calculate the index it is stored in, to make it easier to search for later. To do this, the items are stored in a hash table at a position specified by a hash code. A hash code is an integer value calculated from any given data value or object, and is used to determine where a value should be stored in a hash table. This hash code value is generated by a hash function, which will always produce the same hash code given a specific data value or object. If two objects produce the same hash code, this is known as a collision. A collision is typically handled by creating buckets that contain LinkedLists - there is a list at each index, so that if more than one value happens to be stored there, it is added to the already existing list. If there is a collision and there is intent to do a look up, the run time would increase as the program would still have to go through all of the elements in the bucket. Unordered Sets use this trick to attain their $O(1)$ look up. In Java unordered sets are referenced as HashSets and in C++ they can be invoked by std::unordered\_set. In the representation below, you can see the hash table for this particular unordered set (notice the collision at index 0).
+
 \includegraphics[scale=0.64]{hashset.png} 
 
 

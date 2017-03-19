@@ -5,11 +5,11 @@ In Chapter 2, we discussed how we can represent the search space of a recursive,
 
 \section{Definitions and Terminology}
 
-Formally, a \textit{graph} set a set of \textit{vertices}, or nodes, and a set of \textit{edges}, where each edge connects two vertices. An \textit{undirected} graph is one in which every edge is bidirectional. In other words, if an edge connects vertex $A$ to vertex $B$, then it also connects $B$ to $A$. In contrast, an \textit{directed} graph is one in which every edge points in a single direction. Directed graphs are also commonly called \textit{Digraphs}. Note, however, that it is possible for two directed edges to exist between two vertices. In a \textit{weighted} graph, each edge is associated with some weight. 
+Formally, a \textit{graph} consists of a set of \textit{vertices}, or nodes, and a set of \textit{edges}, where each edge connects two vertices. An \textit{undirected} graph is one in which every edge is bidirectional. In other words, if an edge connects vertex $A$ to vertex $B$, then it also connects $B$ to $A$. In contrast, an \textit{directed} graph is one in which every edge points in a single direction. Directed graphs are also commonly called \textit{Digraphs}. Note, however, that it is possible for two directed edges to exist between two vertices. In a \textit{weighted} graph, each edge is associated with some weight. 
 
 Graphs can take on many unusual structures. For example, an edge is allowed to point from a vertex to itself. Graphs may also contain multiple edges between the same pair of vertices. For the sake of simplicity, we will only deal with graphs that contain no self loops and multiple edges in this chapter. This is because these cases usually serve very little purpose in solving actual problems. 
 
-A \textit{path} is a sequence of edges which connected a sequence of vertices.  If the first and last vertices in the sequence are the same, then we refer to the path as a \textit{cycle}. For example, in the digraph below, $(E, F, C, H, C, G)$ is a valid path and $(H, E, F, A)$ is a valid cycle. Two vertices are said to be \textit{connected} if these exists a path between them. A connected graph is a graph in which all pairs of vertices are connectd. 
+A \textit{path} is a sequence of edges which connected a sequence of vertices.  If the first and last vertices in the sequence are the same, then we refer to the path as a \textit{cycle}. For example, in the digraph below, $(E, F, C, H, C, G)$ is a valid path and $(H, E, F, A)$ is a valid cycle. Two vertices are said to be \textit{connected} if these exists a path between them. A connected graph is a graph in which all pairs of vertices are connected. 
 
 A \textit{tree} is a special kind of undirected graph that contains no cycles. Trees are particularly useful because we can choose a single node to be the \textit{root} of the tree. Then all edges in the tree are given a natural direction, namely towards the root. We will discuss trees more in-depth in a later chapter.
 
@@ -46,7 +46,7 @@ Roughly speaking, a {\bf graph} is a network of ``cities'' and ``roads.''
 Formally speaking, a graph is a collection of points called {\bf nodes} and segments that connect pairs of nodes called {\bf edges}.
 
 In computer science, graphs can be used to represent any abstract objects and their relations.
-Graph theory is heavy in vocabs, but we will just go over the most important ones.
+Graph theory is heavy in vocabulary, but we will just go over the most important terms.
 
 In a {\bf undirected graph}, the edges are bidirectional, aka if one edge connects from node $A$ to node $B$, then it also connects from node $B$ to node $A$.
 Then in a {\bf directed graph}, the edges have a preferred direction that they are ``one-way roads.''
@@ -110,24 +110,26 @@ An adjacency list usually scales better for large $N$ than an adjacency matrix b
 
 In this section, we will apply what we've just discussed to learn a number of well-known graph algorithms. 
 
-\begin{comment}
-Proceed to copy paste from SCT lectures. 
-\end{comment}
 
-\subsection{Depth First Search}
+\subsection{Tree traversal}
 
-In section ??, we talked about using recursion to explore states, specifically in the case of generating permutations. We also represented those states as a search tree.
-
-% this section is kind of messy bc im sleep deprived sorry
-% it turns out that this is more like talking about trees. it might be more useful to actually
-% introduce it that way first, then show how it applies to graphs as well.
-% kevin, 2017-02-24
+In section \ref{recursive-search} we talked about using recursion to explore states, specifically in the case of generating permutations. We also represented those states as a search tree.
 
 In what order did we traverse that tree? We started at the root node, or level 0. Then we chose a node at level 1, and then another at level 2, and so on until we reached the bottom of the tree. At that point, we've reached one node on each of the levels, but no more. Only after that will we start to check other nodes on the same levels.
 
 Why does our recursive method behave like this? Let's say that every time we make a recursive call, we're visiting a node. So when we visit a permutation X, if we are able to we immediately generate a new permutation, we do so, and we visit the new permutation through a recursive call. Only after we get back to the original call do we generate other permutations. Thus, our use of recursion ensures that we examine the deeper elements first, which is why we call this \textit{depth first search}.
 
-A tree has no cycles. need to check for nodes that we've already visited
+\subsection{Depth First Search}
+
+We can use this same recursive strategy to traverse all nodes in a graph. We can treat each node as a possible state, and recur on each of its neighbors.
+
+One change that we must make, however, is to check whether we've already visited a node before recurring on it. This is because unlike trees, graphs can contain cycles, so there may be multiple ways to reach a node. If we don't do this, we might recurse indefinitely along a cycle.
+
+The only difference between an \textit{undirected graph} and a \textit{tree} is that a tree contains no cycles. In other words, it is \textbf{acyclic}. We can express any acyclic undirected graph as a tree if we pick an arbitrary node to be the root, then treat its neighbors as its children, and so on.
+
+We can apply this to a graph represented by an adjacency list, which stores the neighbors of each node. We can also apply this to a grid, in which the neighbors of a cell are the four adjacent cells. Interestingly, the edges that were traversed in the graph correspond to the search tree of the recursion. Assuming the graph is connected, the search tree is a spanning tree of the graph, which means that it includes all of the vertices in the graph.
+
+% insert pseudocode here?
 
 
 \subsection{Breadth First Search}
@@ -135,12 +137,13 @@ A tree has no cycles. need to check for nodes that we've already visited
 Another way to explore the tree is to go level by level. We start at the root node at level 0. Next, we examine its children on level 1. Then, we examine the children of the nodes on level 1, which are on level 2, and so on. How can we implement this in our code?
 
 % maybe math notation is not that good
-We could start by forming a list $A_0$ of nodes on level 0; i.e., only the root node. Then, we can find $A_1$ by adding all the children of the nodes in $A_0$, and so on, each time generating $A_(k+1)$ from $A_k$.
+We could start by forming a list $A_0$ of nodes on level 0; i.e., only the root node. Then, we can find $A_1$ by adding all the children of the nodes in $A_0$, and so on, each time generating $A_{k+1}$ from $A_k$.
 
 In fact, we can do this with only one array, $Q = A_0 + A_1 + ... + A_n$. While we're processing $A_k$, we can simply append the elements of $A_k$ to the end of the list. What does this remind us of? That's right, a queue! For each node we remove from the front of the queue, we insert the children of that node into the back of the queue. This ensures that we process all nodes in the graph in breadth-first order.
 
+% insert pseudocode here?
 
-It turns out that the only difference between a \textit{graph} and a \textit{tree} is that a tree is a graph without cycles. So if we want to extend our knowledge of tree traversal to graph traversal, all we have to do is avoid cycles.
+
 
 \section{Shortest Paths}
 

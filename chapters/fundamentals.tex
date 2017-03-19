@@ -23,7 +23,7 @@ Note that this algorithm was not written in a formal programming language above,
 \section{Code efficiency}
 
 % TODO: properly link to algorithm 1
-Computers are very fast at running programs! You've probably written many programs that finish almost instantaneously. Yet push any program to its limits, and it will begin to run slowly. If adding two numbers together is fast, what if we wanted to add two billion of them together? Then we'd find out that computers aren't so instantaneous after all. Of course, it's unlikely that you'd need to process so many numbers, but with more complicated algorithms, you can imagine that we might have to do something more complicated than adding them up. Another problem we might run into when adding that many numbers is memory limitations: it turns out that if we use two billion 32-bit integers will take up 8 GB, which we might not even have enough memory to store! As a result, we need some way to quantify how long a program takes to execute, or its \textbf{computational complexity}, and how much memory it uses, or its \textbf{space complexity}.
+Computers are very fast at running programs! You've probably written many programs that finish almost instantaneously. Yet push any program to its limits, and it will begin to run slowly. If adding two numbers together is fast, what if we wanted to add two billion of them together? Then we'd find out that computers aren't so instantaneous after all. Of course, it's unlikely that you'd need to process so many numbers, but with more complicated algorithms, you can imagine that we might have to do something more complicated than adding them up. Another problem we might run into when adding that many numbers is memory limitations; it turns out that two billion 32-bit integers will take up 8 GB! As a result, we need some way to quantify how long a program takes to execute, or its \textbf{computational complexity}, and how much memory it uses, or its \textbf{space complexity}.
 
 %Remember when we talked about how algorithms can range from simple to complex? How can we tell the difference between a simple algorithm and a complicated one? The answer lies in \textbf{Computational Complexity}.  Computational Complexity is a measure of how efficiently a program will run.  Although computers appear to be instant, all operations take time.  Computers are limited to a finite, yet extremely large, number of operations per second. In most modern computers, approximately $ 10^8 $ operations can be done per second.  This seems like a huge number, but in practice, we find that we quickly use it up, especially when dealing with large amounts of data.  This is why it is incredibly important to write \textbf{efficient} algorithms - a poorly written algorithm that solves a task in three days of computation time could be completed in under a second if written efficiently! Thus far, we have only developed a qualitative idea of efficiency, but computer scientists want rigor, and thus use \textbf{Big-O notation} in order to quantify the efficiency of their algorithms.
 
@@ -51,7 +51,7 @@ In a more theoretical sense, one can determine the Big-O efficiency of an algori
 
 $$ \lim_{n \to \infty}{\frac{|f(n)|}{|g(n)|}} = M $$
 
-\noindent where $ M $ is a finite, positive value.  In other words, $ f(n) $ grows on the order of $ g(n) $.  Choosing $ g(n) = n^2 $ will result in a value of $ 3 $ for M, and so the function $ f(n) $ and the associated algorithm is said to be of order $ O(n^2) $.  Note that this choice of $ g(n) $ is not unique, but is the "simplest" choice.  This process is similar to a leading term test, often used when taking the limit of a rational function in BC Calculus, in which the term that grows fastest "dominates" the rest as the independent variable becomes large.
+\noindent where $ M $ is a finite, positive value.  In other words, $ f(n) $ grows on the order of $ g(n) $ where the exponent in the biggest term is the same for both functions.  Choosing $ g(n) = n^2 $ will result in a value of $ 3 $ for M, and so the function $ f(n) $ and the associated algorithm is said to be of order $ O(n^2) $.  Note that this choice of $ g(n) $ is not unique, but is the "simplest" choice.  This process is similar to a leading term test, often used when taking the limit of a rational function in BC Calculus, in which the term that grows fastest "dominates" the rest as the independent variable becomes large. In simpler terms, everything but the largest degree term is ignored and all coefficients are dropped.
 
 As an example, consider the following algorithm:
 
@@ -99,7 +99,7 @@ Another thing to keep in mind is that most problems have an intended solution, a
 \end{tabular}
 \end{center}
 
-\footnotetext[1]{Don't forget that generally, you'll need to read the input values, which will take linear time.}
+\footnotetext[1]{Don't forget that generally you'll need to read the input values which will take linear time.}
 
 \begin{comment}
 \begin{itemize}

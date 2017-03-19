@@ -1,6 +1,6 @@
 \chapter{Basic Algorithms}
 
-Now that we've discussed some of the tools programmers use to write algorithms, lets discuss the actual algorithms!  Coders use many different techniques in order to solve problems, and many of the basic methods will be discussed in this section.
+Now that we've discussed some of the tools programmers use to write algorithms, let's discuss the actual algorithms!  Coders use many different techniques in order to solve problems, and many of the basic methods will be discussed in this section.
 
 \section{Brute Force}
 
@@ -32,7 +32,7 @@ As demonstrated in that example, the greedy solution will not always produce the
 
 In practice, the greedy algorithm is often used to find approximate solutions to a difficult problem.  By taking a greedy approach, one can find an answer that is close to the actual answer, in order to provide a starting point for further optimization.
 
-\section{Recursion}
+\section{Recursion} \label{recursion}
 
 Recursion is a strategy that we can use in order to help us solve complicated problems.  The idea of recursion involves solving a larger problem by breaking it down into smaller, self-similar problems.  Recursion is most useful when the problem one is trying to solve depends on subproblems that are equivalent to the original.  For example:
 
@@ -60,7 +60,7 @@ We can employ the use of a recursive solution in order to solve this problem, ou
 All recursive solutions must have two parts: the base case and the recursion.  The base case specifics where to stop - without a base case, the recursion will go on forever (or at least until the computer runs out of memory)!  In this solution the base case is when $ N = 1 $ or $ N = 2 $.  The recursive part is the bulk of the solution.  Each call to the function calls the function again with a smaller argument, until it eventually becomes $ 1 $ or $ 2 $.  Because the Fibonnaci problem can be broken down into smaller, self-similar pieces, recursion is a good choice to solve this problem.
 
 
-\subsection{Recursive search}
+\subsection{Recursive search} \label{recursive-search} %Maybe a tree diagram for a visual?
 % begin copy paste (please edit)
 We can also use recursion to generate and explore states. If from any given state in a problem, we can reach other states, then we can simply recur on the states that we generated to explore all possible states. This is known as a depth-first search, something that will be discussed later.
 
