@@ -16,7 +16,7 @@ As an initial approach to this problem\footnote{You might recognize this as the 
 
 Note that in many cases, a brute force solution will \textbf{not} be fast enough - prompting us to learn and develop more efficient algorithms.  However, a brute force approach may not be a bad starting point.  It is often a good idea to first attempt a problem using a brute force approach, and perform an analysis on whether or not it is sufficient to solve the problem within the time limit.  If it works (like the example above), then the problem is solved; otherwise, it may provide a good basis for further refinement.  It is possible that the desired solution is merely the brute force approach with some minor optimizations!
 
-\section{Greedy Algorithm}
+\section{Greedy Algorithm} \label{greedy}
 
 The Greedy Algorithm, while called an algorithm, is more of a strategy.  The premise of the strategy is as follows: in order to find the best solution, at each step, we will choose the option that appears to best lead us in the right direction.  The assumption made by the Greedy Algorithm is that if, at each intermediate step, we make the best possible choice at that step, we will arrive at the best overall result.
 
@@ -37,7 +37,7 @@ In practice, the greedy algorithm is often used to find approximate solutions to
 Recursion is a strategy that we can use in order to help us solve complicated problems.  The idea of recursion involves solving a larger problem by breaking it down into smaller, self-similar problems.  Recursion is most useful when the problem one is trying to solve depends on subproblems that are equivalent to the original.  For example:
 
 \begin{Problem}
-Given $ N $ ($ 1 \leq N \leq 100 $), determine the $ N $th Fibonnaci number, where the $N$th Fibonnaci number is defined as the sum of the $(N-1)$th and $(N-2)$th Fibonnaci number.
+Given $ N $ ($ 1 \leq N \leq 100 $), determine the $ N $th Fibonnaci number, where the $N$th Fibonnaci number is defined as the sum of the $(N-1)$th and $(N-2)$th Fibonnaci number. 
 \end{Problem}
 
 We can employ the use of a recursive solution in order to solve this problem, outlined below.

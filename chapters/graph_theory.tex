@@ -252,6 +252,8 @@ Suppose edge $e$ connects vertices $u$ and $v$. If $dist(v) > dist(u) + weight(e
 
 In the worst case, the algorithm will check every edge, and every edge will be relaxed. Each relaxation requires a priority queue insertion operation of complexity $O(\log V)$. Therefore, the complexity of Djikstra's Algorithm is $O(E \log V)$.
 
+
+\begin{comment}
 \subsection{Bellman-Ford}
 If a graph contains negative edge weights, Dijkstra's algorithm cannot be used, because it is a greedy algorithm. Instead, we can use the \textbf{Bellman-Ford} algorithm, which simply relaxes all $E$ edges, $V-1$ times, which is the maximum path length.
 
@@ -284,5 +286,5 @@ If the graph contains a negative cycle, there is no "shortest" path. However, th
 \end{algorithm}
 
 The complexity of such an algorithm is obviously $O(E V)$. This can be improved by maintaining a queue of vertices whose distances were updated. Although the worst-case complexity remains the same, the average number of iterations decreases to $E$. However, checking for negative cycles will instead require us to look for cycles in the shortest-path tree\footnote{Well, if there is a cycle, it's not a tree...} defined by $prev$.
-
+\end{comment}
 
