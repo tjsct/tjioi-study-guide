@@ -4,8 +4,8 @@ Now that we've discussed some of the tools programmers use to write algorithms, 
 
 \section{Brute Force}
 
-Brute force is, to be put simply, exactly what it sounds like.  In some problems, when the number of possibilities is sufficiently small, the best option may be to check each case individually.  This is known as \textbf{brute force:} instead of generating solutions directly, we generate a larger set of possible solutions and filter out the ones that work.
-%make no attempt to reduce the possibilities that we must check.
+A \textbf{brute force} algorithm is one that tries every possibility in hopes of finding a solution. Though this may seem inefficient, in some problems, when the number of possibilities is sufficiently small, the best option may be to check each case individually.  Instead of generating solutions directly, we generate a larger set of possible solutions and filter out the ones that work.
+
 For example, consider the following problem:
 
 \begin{Problem}
@@ -18,7 +18,7 @@ Note that in many cases, a brute force solution will \textbf{not} be fast enough
 
 \section{Greedy Algorithm} \label{greedy}
 
-The Greedy Algorithm, while called an algorithm, is more of a strategy.  The premise of the strategy is as follows: in order to find the best solution, at each step, we will choose the option that appears to best lead us in the right direction.  The assumption made by the Greedy Algorithm is that if, at each intermediate step, we make the best possible choice at that step, we will arrive at the best overall result.
+A \textbf{greedy algorithm} describes an algorithm that, in order to find the best solution, at each step, chooses the option that appears to best lead it in the right direction.  The assumption made by the Greedy Algorithm is that if, at each intermediate step, we make the best possible choice at that step, we will arrive at the best overall result.
 
 This seems like a fairly reasonable strategy, as by following the best choice at each step, we should be led in the right direction.  For example, consider this problem:
 
@@ -28,7 +28,7 @@ Kevin has $ \$N $ ($ 1 \leq N \leq 1000 $) and would like to make change with th
 
 The optimal strategy here would be to first take as many $ 100 $-dollar bills as possible, then $ 20 $-dollar bills, then $ 10 $-dollar bills, and so on.  We can see this is true as each increasing bill amount is a multiple of the previous amount.  Therefore, if we have enough bills of a denomination to "trade in" for one bill of the next denomination, it will always reduce the total number of bills.  Suppose we begin with $ N $ $ 1 $-dollar bills.  We will trade in as many as possible for the largest denomination possible.  Using the remaining bills, we will trade in as many as possible for the next largest denomination.  We will repeat this process until we can no longer do so, and we have arrived at our solution.  Note that this method only works when increasing bill denominations are multiples of the previous denomination.  For example, if one only had bills of $ \$1 $, $ \$3 $, and $ \$ 4 $, and one wished to get change for $ \$6 $, the optimal solution would be $ 2 $ bills of $ \$3 $, whereas the greedy solution would call for one $ 4 $-dollar bill and two $ 1 $-dollar bills, for a total of $ 3 $ bills.
 
-As demonstrated in that example, the greedy solution will not always produce the right answer.  One must think carefully to determine if the problem they are facing is one that can be solved using a greedy strategy.  One of the most famous problems whose solution takes advantage of the greedy algorithm is the \textit{Minimum Spanning Tree} problem, which we will discuss further in a later chapter.  The major drawback of the greedy algorithm is its short-sightedness: imagine a chess player employing the greedy algorithm.  The player will never sacrifice a piece, or move a piece backwards, as it makes the choice that is best specifically in that turn, and neither of those events are beneficial when viewed in the context of only that one turn.  In a complicated problem, such as chess, it is often the case that taking a step backwards may result in a better end result.
+As demonstrated in that example, the greedy solution will not always produce the right answer.  One must think carefully to determine if the problem they are facing is one that can be solved using a greedy strategy.  The major drawback of the greedy algorithm is its short-sightedness: imagine a chess player employing the greedy algorithm.  The player will never sacrifice a piece, or move a piece backwards, as it makes the choice that is best specifically in that turn, and neither of those events are beneficial when viewed in the context of only that one turn.  In a complicated problem, such as chess, it is often the case that taking a step backwards may result in a better end result.
 
 In practice, the greedy algorithm is often used to find approximate solutions to a difficult problem.  By taking a greedy approach, one can find an answer that is close to the actual answer, in order to provide a starting point for further optimization.
 
@@ -70,14 +70,13 @@ This idea can be represented by a search tree. The root node of the tree is the 
 \subsection{Permutations}
 
 \begin{Problem}
-Given an integer $n$, print out all possible permutations of the integers $1..n$.\footnote{In Python, you can use \texttt{itertools.product(range(n))}!} For example, if $n=3$, the permutations would be (1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1).
+Given an integer $n$, print out all possible permutations of the integers $1..n$. For example, if $n=3$, the permutations would be (1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1).
 \end{Problem}
 
-\noindent This is easy to solve for a fixed value of $n$, such as $n=3$, just by writing $n$ for-loops. But we can't exactly output $n$ for-loops. Instead, we can build each permutation of length 1. We can then recur on those results to build permutations of length 2, and so on.
+\noindent This is easy to solve for a fixed value of $n$: for example, for $n=3$, we can just write $n$ for-loops. But given an arbitrary $n$, we can't just write $n$ for-loops. Instead, we can use a recursive strategy. We'll start by building each permutation of length 1. We can then recur on those results to build permutations of length 2, and so on.
 
 
 % TODO: insert image for search tree
-
 \begin{algorithm}[H]
 \caption{Generating permutations}
 \begin{algorithmic}
@@ -85,7 +84,7 @@ Given an integer $n$, print out all possible permutations of the integers $1..n$
 \State $used \gets \{false, false, \ldots, false\}$
 \Function{GeneratePermutations}{depth, prefix}
     \If{$depth = n$}
-        \State \Call{print}{prefix}
+        \State \Call{Print}{prefix}
         \State \Return
     \EndIf
     \For{$i = 1..n$}
@@ -108,11 +107,11 @@ When performing graph traversal, we can use an explicit stack to keep track of n
 
 \section{Searches}
 
-Searching is the act of finding an object, if it exists (and informing us if it does not) within a data structure, most commonly an array.  We will discuss two kinds of searches, each with their own advantages and disadvantages.  Searches are also useful in graph theory, and we will discuss the associated searches in a later chapter.
+In this section, searching refers specifically to searching for an item within an array. We want to know whether the item exists, and if so, we want to know its position. We will discuss two kinds of searches, each with their own advantages and disadvantages.
 
 \subsection{Linear Search}
 
-The linear search is the most straightforward way of searching an array.  We iterate over each element of the array, and check to see if it is the element that we want.  As we have to check every element of the array, linear search runs in $ O(n) $.  Although linear search is not the most efficient method, it will always work as each element is checked.
+The linear search is the most straightforward way of searching an array.  We iterate over each element of the array, and check to see if it is the element that we want. If there is a match, then the value is returned. If there is not, it will continue to search to the end of the data collection. As in the worst case, we will have to check every element of the array, the time complexity of linear search is $ O(n) $.  Although linear search is not the most efficient method, it will always work as each element is checked.
 
 \subsection{Binary Search}
 
@@ -124,23 +123,6 @@ Sorting is a fundamental problem in computer science: one that is easy to unders
 
 % reword
 In order to sort an array, we must first define how we intend to compare two objects in the array.  It doesn't make any sense to ask if Apple or Orange is greater until we state what we mean by "greater".  Different languages implement this differently: for example, in Java, we can determine the order in which to sort elements using the \texttt{Comparable} or \texttt{Comparator} interfaces.  These interfaces force us to write a method which compares an object with another, so that any object in the array must be "greater than", "less than", or "equal to" another object, which we define within the method.  The sorting algorithms we analyze in this section will be similar in that they can be performed using only comparison operations; thus, we refer to them as \textit{comparison-based sorts}.
-
-With only a comparison operation, we can verify that an array is sorted.
-
-\begin{algorithm}[H]
-\caption{}
-\begin{algorithmic}
-\Function{CheckSort}{A}
-    \For{each $a_i$ in $A$}
-        % probably better to do a_i > a_{i+1}
-        \If{$i > 0$ and $a_{i-1} > a_i$}
-            \State \Return false
-        \EndIf
-    \EndFor
-    \State \Return true
-\EndFunction
-\end{algorithmic}
-\end{algorithm}
 
 
 \subsection{Selection sort}

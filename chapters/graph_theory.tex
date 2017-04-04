@@ -5,15 +5,16 @@ In Chapter 2, we discussed how we can represent the search space of a recursive,
 
 \section{Definitions and Terminology}
 
-Formally, a \textit{graph} consists of a set of \textit{vertices}, or nodes, and a set of \textit{edges}, where each edge connects two vertices. An \textit{undirected} graph is one in which every edge is bidirectional. In other words, if an edge connects vertex $A$ to vertex $B$, then it also connects $B$ to $A$. In contrast, an \textit{directed} graph is one in which every edge points in a single direction. Directed graphs are also commonly called \textit{Digraphs}. Note, however, that it is possible for two directed edges to exist between two vertices. In a \textit{weighted} graph, each edge is associated with some weight. 
+Formally, a \textbf{graph} consists of a set of \textit{vertices}, or nodes, and a set of \textit{edges}, where each edge connects two vertices. An \textit{undirected} graph is one in which every edge is bidirectional. In other words, if an edge connects vertex $A$ to vertex $B$, then it also connects $B$ to $A$. In contrast, an \textit{directed} graph is one in which every edge points in a single direction. Directed graphs are also commonly called \textit{digraphs}. Note, however, that it is possible for two directed edges to exist between two vertices. In a \textit{weighted} graph, each edge is associated with some weight. 
 
 Graphs can take on many unusual structures. For example, an edge is allowed to point from a vertex to itself. Graphs may also contain multiple edges between the same pair of vertices. For the sake of simplicity, we will only deal with graphs that contain no self loops and multiple edges in this chapter. This is because these cases usually serve very little purpose in solving actual problems. 
 
-A \textit{path} is a sequence of edges which connected a sequence of vertices.  If the first and last vertices in the sequence are the same, then we refer to the path as a \textit{cycle}. For example, in the digraph below, $(E, F, C, H, C, G)$ is a valid path and $(H, E, F, A)$ is a valid cycle. Two vertices are said to be \textit{connected} if these exists a path between them. A connected graph is a graph in which all pairs of vertices are connected. 
+A \textbf{path} is a sequence of edges which connected a sequence of vertices.  If the first and last vertices in the sequence are the same, then we refer to the path as a \textbf{cycle}. For example, in Figure \ref{digraph-example}, $(E, F, C, H, C, G)$ is a valid path and $(H, E, F, A)$ is a valid cycle. Two vertices are said to be \textit{connected} if these exists a path between them. A connected graph is a graph in which all pairs of vertices are connected. 
 
-A \textit{tree} is a special kind of undirected graph that contains no cycles. Trees are particularly useful because we can choose a single node to be the \textit{root} of the tree. Then all edges in the tree are given a natural direction, namely towards the root. We will discuss trees more in-depth in a later chapter.
+A \textbf{tree} is a special kind of undirected graph that contains no cycles. Trees are particularly useful because we can choose a single node to be the \textbf{root} of the tree. Then all edges in the tree are given a natural direction, namely towards the root. We will discuss trees more in-depth in a later chapter.
 
-\begin{center}
+\begin{figure}
+\centering
 \begin{minipage}{0.48\linewidth}
 \begin{tikzpicture}[very thick,level/.style={sibling distance=60mm/#1}]
 \draw (0, 0) node [vertex] (n1) {A};
@@ -38,7 +39,9 @@ A \textit{tree} is a special kind of undirected graph that contains no cycles. T
 \draw[->] (n4) -- (m4);
 \end{tikzpicture}
 \end{minipage}
-\end{center}
+\label{digraph-example}
+\caption{An example of a digraph.}
+\end{figure}
 
 
 \begin{comment}
@@ -62,7 +65,7 @@ A {\bf complete graph} or {\bf clique} is a graph in which each node is reachabl
 
 
 
-\section{Representations of Graph}
+\section{Representations of Graphs}
 
 Before discussing graph algorithms, it is important to understand how to represent a graph so that we have access information efficiently. In this section, we will go over the two main graph representations and their respective advantages.
 
@@ -119,30 +122,65 @@ In what order did we traverse that tree? We started at the root node, or level 0
 
 Why does our recursive method behave like this? Let's say that every time we make a recursive call, we're visiting a node. So when we visit a permutation X, if we are able to we immediately generate a new permutation, we do so, and we visit the new permutation through a recursive call. Only after we get back to the original call do we generate other permutations. Thus, our use of recursion ensures that we examine the deeper elements first, which is why we call this \textit{depth first search}.
 
+
 \subsection{Depth First Search}
 
-We can use this same recursive strategy to traverse all nodes in a graph. We can treat each node as a possible state, and recur on each of its neighbors.
+We can use this same recursive strategy to traverse all nodes in a graph, by treating each node as a possible state and recurring on each of its neighbors.
 
-One change that we must make, however, is to check whether we've already visited a node before recurring on it. This is because unlike trees, graphs can contain cycles, so there may be multiple ways to reach a node. If we don't do this, we might recurse indefinitely along a cycle.
+One change that we must make, however, is that we must check whether we've already visited a node before recurring on it. This is because unlike trees, graphs can contain cycles; consequently, there may be multiple ways to reach any given node. If we don't do this, we might recurse indefinitely along a cycle.
 
 The only difference between an \textit{undirected graph} and a \textit{tree} is that a tree contains no cycles. In other words, it is \textbf{acyclic}. We can express any acyclic undirected graph as a tree if we pick an arbitrary node to be the root, then treat its neighbors as its children, and so on.
 
-We can apply this to a graph represented by an adjacency list, which stores the neighbors of each node. We can also apply this to a grid, in which the neighbors of a cell are the four adjacent cells. Interestingly, the edges that were traversed in the graph correspond to the search tree of the recursion. Assuming the graph is connected, the search tree is a spanning tree of the graph, which means that it includes all of the vertices in the graph.
+We can apply depth-first search to a graph represented by an adjacency list, which stores the neighbors of each node. We can also apply this to a grid, in which the neighbors of a cell are the four adjacent cells. Interestingly, the edges that were traversed in the graph correspond to the search tree of the recursion. Assuming the graph is connected, the search tree is a spanning tree of the graph, which means that it includes all of the vertices in the graph.
 
-% insert pseudocode here?
+\begin{algorithm}[H]
+\caption{Graph traversal with depth-first search}
+\begin{algorithmic}
+
+\State $visited \gets$ empty set
+\Function{DFS}{v}
+    \State add $v$ to $visited$
+    \For{$w$ in $v.neighbors$}
+        \If{$w$ not in $visited$}
+            \State \Call{DFS}{$w$}
+        \EndIf
+    \EndFor
+\EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
 
 
 \subsection{Breadth First Search}
 
-Another way to explore the tree is to go level by level. We start at the root node at level 0. Next, we examine its children on level 1. Then, we examine the children of the nodes on level 1, which are on level 2, and so on. How can we implement this in our code?
+Another way to explore the tree is to go level by level, where level $k$ of a tree represents all nodes with depth $k$. We start at the root node at level 0. Next, we examine its children on level 1. Then, we examine the children of the nodes on level 1, which are on level 2, and so on. Similarly, we can explore a graph using the same strategy, if we ignore repeated nodes, just as we did for depth first search. How can we implement this in our code?
 
 % maybe math notation is not that good
 We could start by forming a list $A_0$ of nodes on level 0; i.e., only the root node. Then, we can find $A_1$ by adding all the children of the nodes in $A_0$, and so on, each time generating $A_{k+1}$ from $A_k$.
 
 In fact, we can do this with only one array, $Q = A_0 + A_1 + ... + A_n$. While we're processing $A_k$, we can simply append the elements of $A_k$ to the end of the list. What does this remind us of? That's right, a queue! For each node we remove from the front of the queue, we insert the children of that node into the back of the queue. This ensures that we process all nodes in the graph in breadth-first order.
 
-% insert pseudocode here?
+\begin{algorithm}[H]
+\caption{Graph traversal with breadth-first search}
+\begin{algorithmic}
 
+\Function{BFS}{$v_0$}
+    \State $visited \gets$ empty set
+    \State $queue \gets \{v_0\}$
+
+    \While{$queue$ is not empty}
+        \State remove $v$ from queue
+        \For{$w$ in $v.neighbors$}
+            \If{$w$ not in $visited$}
+                \State add $w$ to queue
+            \EndIf
+        \EndFor
+    \EndWhile
+\EndFunction
+
+\end{algorithmic}
+\end{algorithm}
 
 
 \section{Shortest Paths}
@@ -198,7 +236,7 @@ Then, for every vertex $k$, and every pair of vertices $i \rightarrow j$, we try
 One way to see why this works is to consider two vertices $u$ and $v$ for which we already know the shortest path from $u \rightarrow v$. Once we consider each of the vertices in that shortest path, $dist(u,v)$ will be the length of the shortest path.
 
 \subsection{Dijkstra's algorithm}
-Dijkstra's algorithm calculates the shortest path from a source vertex $u$ to every other node in the graph. If we're only interested in the shortest path from $u \rightarrow v$, we can stop once we remove $v$ from the priority queue.
+Dijkstra's algorithm calculates the shortest path from a source vertex $u$ to every other node in the graph. It functions using a greedy approach, continually removing the closest unvisited node to $u$, and then relaxing the edges connected to it. We can implement this by placing our nodes in a \textbf{priority queue}, which is a queue that allows us to efficiently remove the element with the minimum value. If we're only interested in the shortest path from $u \rightarrow v$, we can stop once we remove $v$ from the priority queue.
 
 But why does it work? Every time we remove a vertex $u$ from $pq$, $dist(u)$ is monotonically increasing. This is because the priority queue always gives the minimum element, and for any $u$ removed from the priority queue with neighbor $v$ added to it, $dist(v) < dist(u)$.
 
@@ -243,48 +281,10 @@ But why does it work? Every time we remove a vertex $u$ from $pq$, $dist(u)$ is 
 \end{algorithmic}
 \end{algorithm}
 
-An important implementation note: C++ implements a \textbf{max heap} rather than a min heap. You can get around this by negating the values of $dist$, or by using \verb|std::greater| as the comparator.
-
 
 \subsection{Complexity}
 
 Suppose edge $e$ connects vertices $u$ and $v$. If $dist(v) > dist(u) + weight(e)$, then we define the process of \textit{relaxing} an edge $e$ as $dist(v) \gets dist(u) + weight(e)$.
 
 In the worst case, the algorithm will check every edge, and every edge will be relaxed. Each relaxation requires a priority queue insertion operation of complexity $O(\log V)$. Therefore, the complexity of Djikstra's Algorithm is $O(E \log V)$.
-
-
-\begin{comment}
-\subsection{Bellman-Ford}
-If a graph contains negative edge weights, Dijkstra's algorithm cannot be used, because it is a greedy algorithm. Instead, we can use the \textbf{Bellman-Ford} algorithm, which simply relaxes all $E$ edges, $V-1$ times, which is the maximum path length.
-
-If the graph contains a negative cycle, there is no "shortest" path. However, the Bellman-Ford algorithm is useful for detecting such negative cycles. To do this, we check if any distance needs to be updated after running the loop $V-1$ times. If so, there is a path of length $V$, which is impossible without a negative cycle.
-
-\begin{algorithm}[H]
-\caption{Bellman-Ford}
-\begin{algorithmic}
-\ForAll{vertices $v$}
-	\State $dist(v) \gets \infty$
-    \State $prev(v) \gets -1$
-\EndFor
-\State $dist(src) \gets 0$
-\For{$i = 1,V-1$}
-	\ForAll{edges $(u,v)$}
-    \Comment{relax every edge}
-		\If{$dist(u)+weight(u,v) < dist(v)$}
-    	    \State $dist(v) \gets dist(u)+weight(u,v)$
-	        \State $prev(v) \gets u$
-        \EndIf
-	\EndFor
-\EndFor
-\ForAll{edges $(u,v)$}
-	\Comment{check for negative cycles}
-	\If{$dist(u)+weight(u,v) < dist(v)$}
-   	    \State{negative cycle detected}
-	\EndIf
-\EndFor
-\end{algorithmic}
-\end{algorithm}
-
-The complexity of such an algorithm is obviously $O(E V)$. This can be improved by maintaining a queue of vertices whose distances were updated. Although the worst-case complexity remains the same, the average number of iterations decreases to $E$. However, checking for negative cycles will instead require us to look for cycles in the shortest-path tree\footnote{Well, if there is a cycle, it's not a tree...} defined by $prev$.
-\end{comment}
 

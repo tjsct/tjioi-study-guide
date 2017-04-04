@@ -3,14 +3,14 @@
 Dynamic Programming is the misleading name given to a general method of solving certain optimization problems.  Chances are if a problem asks you to optimize something and doesn't involve a graph, you'll want to use Dynamic Programming.  As always, there are exceptions  (for example, for problems with small upper bounds on $N$, brute force might actually be the way to go).
 
 Dynamic Programming works on problems that can be represented as a series of sub-states.  We can solve the smallest or base state first, then work up from there building up to the solution.  Since we only calculate each sub-state once, the runtime of dynamic programming solutions is polynomial.
-%
-A simple and overused example of dynamic programming is calculation of the Fibonacci numbers.  Calculating the Fibonacci numbers recursively has an exponential time complexity $O(\varphi^N)$.  But if we use dynamic programming to work from the bottom up calculating $F_2$, then $F_3$, etc, it's clear that this is $O(N)$.
-%
+
+A simple and overused example of dynamic programming is calculation of the Fibonacci numbers.  Calculating the Fibonacci numbers recursively has an exponential time complexity $O(\varphi^N)$.  But if we use dynamic programming to work from the bottom up calculating $F_2$, then $F_3$, etc, we can do this in only $O(N)$.
+
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=6in]{images/fib-dp.png}
 \end{center}
-\caption{DP array for calculation of Fibonacci numbers}
+\caption{Calculation of Fibonacci numbers using DP}
 \end{figure}
 
 \section{Knapsack Algorithm}
@@ -19,7 +19,7 @@ A simple and overused example of dynamic programming is calculation of the Fibon
 \begin{center}
 \includegraphics[width=2in]{images/knapsack.png}
 \end{center}
-\caption{Example Knapsack problem}
+\caption{Illustration of a knapsack problem.}
 \label{fig:ihatelarry}
 \end{figure}
 
@@ -40,10 +40,10 @@ Suppose that instead of finding the maximum value obtainable with $C$ as the cap
 This function loops through each item type $j$ and determines which is the most beneficial when added to the bag.  If you choose to add an item of type $j$, the remaining capacity of the knapsack will decrease to $c - W[j]$ while the knapsack's value will increase to $dp[c - W[j]] + V[j]$, which is the sum of item type $j$'s value and the value of a knapsack with the remaining capacity $c - W[j]$.  Then, we simply want the max possible value over all possible item $j$'s to add.
 
 \begin{figure}[h]
-\begin{center}
+\vspace{10pt}
+\centering
 \includegraphics[width=4in]{images/knapsack2.png}
-\end{center}
-\caption{DP array: top row represents capacity, bottom row represents optimum value}
+\caption{An example DP array calculating the optimum value corresponding to a capacity.}
 \end{figure}
 
 
