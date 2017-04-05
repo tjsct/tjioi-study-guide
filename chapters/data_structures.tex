@@ -93,7 +93,7 @@ Arrays are a fundamental type of data structure, implemented at the language lev
 \end{figure}
 
 
-A major caveat to arrays is their \textit{fixed size}, which means that we need to know the maximum number of elements we'll have in an array before we create it. If we need to append an element beyond the capacity we've allocated, we're out of luck. The solution to this is pretty simple: we can simply create a larger array, and copy the elements over.
+A major caveat of arrays is their \textit{fixed size}, which means that we need to know the maximum number of elements we'll have in an array before we create it. If we need to append an element beyond the capacity we've allocated, we're out of luck. The solution to this is pretty simple: we can simply create a larger array, and copy the elements over.
 
 A \textbf{dynamic array}, or a resizable array, provides an abstraction over this process. It maintains a \textit{backing array} that stores the actual elements. When an insertion is impossible because there's not enough space, it "resizes" itself by creating a new backing array of a larger size, copying the elements over, then discarding the old backing array.
 
@@ -106,15 +106,29 @@ Because dynamic arrays are backed by arrays, we can access any element in $O(1)$
 
 \subsection{Linked lists}
 
-A \textbf{linked list} data structure represents a list through a series of \textit{nodes}. Each of these nodes is an object that stores the value of the item it represents, and a pointer to the next node. If there are no more items in the list, we typically represent this with a null pointer.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=2in]{images/paper_clip_chain.jpg}
+\end{center}
+\caption{A chain of paper clips.}
+\label{fig:paper-clips}
+\end{figure}
 
-How can we access items in this list? Since each node is only referenced by the previous node in the list, we need to access nodes $0 \dots k-1$ in order to get to item $k$. This is one of the large downsides of linked lists: accessing elements requires linear, not constant time.
+A \textbf{linked list} data structure represents a list through a series of \textit{nodes}. Each of these nodes is an object that stores the value of the item it represents, and a pointer to the next node. If there are no more items in the list, we typically represent this with a null pointer. We can imagine each node as a paper clip, as in figure~\ref{fig:paper-clips}: each paper clip is chained to the next.
+
+How can we access items in this list? Since each node is only referenced by the previous node in the list, we need to access nodes $0 \dots k-1$ in order to get to item $k$. This is one of the large downsides of linked lists: accessing elements requires linear, not constant time. Continuing our paper clip analogy, we'd start out holding one end of the paper clip, and have to go through every paper clip to reach the other end.
 
 A good thing about linked lists, however, is that they lend themselves well to recursion. As with a recursive function, there is a base case --- when the pointer is null --- and otherwise, a recursive case that splits the list into two parts: the current element, and everything else.
 
 \subsubsection{Doubly-linked lists}
 
-\begin{figure}
+Above, we stated that it takes $k$ memory accesses to access item $k$. So the maximum number of memory accesses in a linked list of size $n$ would be $n$, to access $a_{n-1}$. You might notice, however, that if we could start from either end of a linked list, it would only take $1$ step to access element $n-1$! This would halve the maximum number of accesses to $\frac{n}{2}$, to access element $a_\frac{n}{2}$.
+
+So far, we've only talked about \textbf{singly-linked lists}, in which each node only has one pointer to the next node. To access nodes in either direction, we need to use \textbf{doubly-linked lists}, in which each node has a pointer to the next \textit{and the previous} nodes. This uses slightly more memory, but is used more frequently because it allows us to easily modify both the front and the back of a linked list.
+
+The easiest way to implement a doubly-linked list is using a cyclical list with a dummy node after the last item and before the first. This makes the code to implement linked lists simpler. Figure \ref{doubly-linked-list} illustrates such a linked list with elements "a", "b", and "c", with the dummy node on the left.
+
+\begin{figure}[h]
 \centering
 \begin{tikzpicture}[
         list/.style={
@@ -151,12 +165,6 @@ A good thing about linked lists, however, is that they lend themselves well to r
 \caption{A doubly-linked list with a dummy node.}
 \label{doubly-linked-list}
 \end{figure}
-
-Above, we stated that it takes $k$ memory accesses to access item $k$. So the maximum number of memory accesses in a linked list of size $n$ would be $n$, to access $a_{n-1}$. You might notice, however, that if we could start from either end of a linked list, it would only take $1$ step to access element $n-1$! This would halve the maximum number of accesses to $\frac{n}{2}$, to access element $a_{n/2}$.
-
-So far, we've only talked about \textbf{singly-linked lists}, in which each node only has one pointer to the next node. To access nodes in either direction, we need to use \textbf{doubly-linked lists}, in which each node has a pointer to the next \textit{and the previous} nodes. This uses slightly more memory, but is used more frequently because it allows us to easily modify both the front and the back of a linked list.
-
-The easiest way to implement a doubly-linked list is using a cyclical list with a dummy node after the last item and before the first. This makes the code to implement linked lists simpler. Figure \ref{doubly-linked-list} illustrates such a linked list with elements "a", "b", and "c", with the dummy node on the left.
 
 
 \subsection{Efficiency}
@@ -211,7 +219,52 @@ A \textbf{deque} (pronounced as \textit{deck}) supports the same operations that
 
 However, when combining these two interfaces, we run into a problem with our model: what should happen when we interlace stack operations with queue operations? Should a \textit{push} add items at the same place as an \textit{enqueue}, or at the opposite end? Instead, we revert to an abstract data type more similar to that of a list, with a \textit{front} and a \textit{back}. Our goal is to add and remove elements efficiently at either end.
 
-The most straightforward way to implement a deque is to use a \textbf{doubly-linked list}. As we discussed above, this allows us to access, add, or remove elements at either end of a list in $O(1)$ time. Furthermore, although a linked list requires $O(n)$ time to access an arbitrary element, this isn't a downside for implementing a deque.
+The most straightforward way to implement a deque is to use a \textbf{doubly-linked list}. As we discussed above, this allows us to access, add, or remove elements at either end of a list in $O(1)$ time. Furthermore, although a linked list requires $O(n)$ time to access an arbitrary element, this doesn't matter for a deque.
+
+
+\section{Sets and Maps}
+
+\subsection{Sets}
+A \textbf{set} is a collection of \textit{unique} items. In other words, a set cannot have duplicate values --- if we try to insert an item into a set and it is already in the set, our action will have no effect. The operations we'd like to perform on a set are to add an item, query whether the set contains an item, and remove an item.
+
+One simple way to implement a set is to use a list, searching the list every time we insert an element to make sure it is not already in the list. However, this isn't particularly efficient; all operations take $O(n)$ time. We can do slightly better by sorting our list and using binary search, which reduces query time to $O(\log n)$.
+
+Similarly, rather than maintaining an order that can be controlled by the user, set implementations typically maintain an internal order that allows them to efficiently search for items based on their value. An \textbf{ordered set} keeps the items in sorted order, which can be obtained by iterating over the items in the set. In contrast, an \textbf{unordered set} may use some other ordering not directly related to the values of the items.
+
+
+\subsection{Maps}
+
+A \textbf{map} (or a \textbf{dictionary}, a \textbf{symbol table}, or an \textbf{associative array}) allows us to associate arbitrary \textit{keys} in the map with corresponding \textit{values}. In some sense, this is a generalization of a list, which associates an integer index with a value. To query a map, we provide it with a key, and ask for the value associated with that key. As a result, the keys must be unique, so that we know what to answer to a query. Note, however, values do \textit{not} have to be unique.
+
+Maps are also closely related to sets; the items in a set are analogous to the keys in the map. The difference is that a map allows us to associate each of those items with a value. Because sets and maps have nearly identical implementations, we'll mainly consider implementations of sets instead.
+
+
+\subsection{Ordered sets}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{treeset.png}
+\caption{A representation of an ordered set using a BST in Java.}
+\label{fig:ordered-set}
+\end{figure}
+
+A common implementation for ordered sets uses a \textit{binary search tree}, which maintains the order of its values. (We will discuss binary search trees in section~\ref{sec:bst}.) Searching for, adding, and removing an item can be accomplished in $O(\log n)$, where $N$ is the total number of elements in the set. The logarithm comes from the nature of the tree being used to keep track of the ordering of the set. Figure~\ref{fig:ordered-set} is an example of an ordered set in Java being represented through a tree-based structure.
+
+
+\subsection{Unordered sets}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.60]{hashset.png} 
+\caption{A representation of an unordered set using a hash table in Java.}
+\label{fig:unordered-set}
+\end{figure}
+
+In many cases, however, we may actually want to use an unordered set instead. Why? Because while $O(\log n)$ time is pretty good, a \textbf{hash table} can do even better, implementing the same operations in $O(1)$ amortized time!
+
+Hash tables work by computing a \textit{hash}, an integer value produced by a \textit{hash function} based on the value of an item. This hash is then converted to an index in an array, where the item is stored. One major complication is dealing with \textit{collisions}, in which two different items produce the same hash, though we won't discuss how to deal with those here.
+
+Thanks to hashing, however, using an unordered set is nearly as fast as accessing elements in an array, which only takes $O(1)$. As with a dynamic array, however, we occasionally need to expand the size of a hash table, so the actual complexity is again amortized. In figure~\ref{fig:unordered-set}, you can see the hash table for this particular unordered set (notice the collision at index 0).
 
 
 \section{Trees} \label{sec:trees}
@@ -249,31 +302,22 @@ The most straightforward way to implement a deque is to use a \textbf{doubly-lin
 
 \subsection{Definitions and terminology}
 
-A \textbf{tree} is a non-linear data structure consisting of a number of \textbf{nodes} which are each associated with a value. A node can have multiple \textbf{children}, which are drawn below the node; if the node has no children, it is a \textbf{leaf node}. Correspondingly, each node in a tree also has a parent, except for the topmost node, which is the \textbf{root node}. When a tree is drawn, the root is placed at the top, with arrows pointing to its child nodes below.
+A \textbf{tree} is a non-linear data structure consisting of a number of \textbf{nodes} which are each associated with a value. A node can have multiple \textbf{children}; if the node has no children, it is a \textbf{leaf node}. Correspondingly, each node in a tree also has a parent, except for the topmost node, which is the \textbf{root node}.
 
-An important property of trees is that each node can be thought of as the root of its own subtree. This lends itself to recursive algorithms for processing trees.
+When a tree is drawn, the root is usually placed at the top, with arrows pointing to its child nodes below. (Mathematicians draw trees the other way around.) Figure \ref{fig:tree0} is an example of a tree. In this example, "a" is the \textit{root node}, and its \textit{children} are "b" and "c". The leaf nodes in the tree are "d", "h", "i", and "g".
 
-Figure \ref{fig:tree0} is an example of a tree.\footnote{Yes, computer scientists draw trees with the root at the top! Mathematicians draw them the other way around.} In this example, "a" is the \textit{root node}, and its \textit{children} are "b" and "c". The leaf nodes in the tree are "d", "h", "i", and "g".
 
 
 The \textbf{height} of a tree (or its \textbf{depth}) is the number of links needed to get from the root to the node furthest away from the root. For example, in the example tree, "h" (or "i" or "j") is furthest away from the root. If we trace the path between the root and "h" [trace: a to d, d to f, f to h], 3 links are made, so the height is 3.
 
+An important property of trees is that each node can be thought of as the root of its own subtree. This lends itself to recursive algorithms for processing trees. We'll talk more about those in section~\ref{sec:graph-search}.
 
 Generally, in a tree each node can have any number of children. A \textbf{binary tree} is a specific type of tree in which each node has at most two children; because of this, we often refer to the \textit{left} and \textit{right} child of a node. We can represent a binary tree with a class similar to that of a doubly-linked list; though instead of pointers to the previous and next node, we have pointers to the left and right children.
 
 
 \subsection{Binary search trees} \label{sec:bst}
 
-A \textbf{binary search tree}, or BST, is a type of binary tree that has been structured in a specific way to make it amenable to searching. Suppose we have some node $X$ with a value $v_X$. Then, for any of its children $C$, let its value of $v_C$. If $C$ is in the left subtree of $X$, then $v_C < v_X$. Otherwise, if $C$ is in the right subtree of $X$, then $v_C \geq v_X$. In other terms, everything in the left subtree of a given node has a lower value, and everything in the right subtree has a larger or equal value.
-
-To use a BST, we need to impose some kind of ordering on the elements that we store. As we discussed with sorting in section~\ref{sec:sorts}, the ordering is generally implementation-defined based on the type of the elements, and can be overridden.
-
-When searching for an element in the BST, we can employ a binary search. First, we compare the value we're looking for with the value of the root node. Then, we select either the left or the right subtree based on the result of the comparison, and we perform the same comparison. This continues until we either find the value we're looking for or reach a leaf node and conclude the value isn't present. If we assume that with every iteration we cut the number of elements in half --- as with binary search --- then we can find the element we desire in $O(\log n)$ time. This is better than the $O(n)$ time complexity of the list structures especially as the number of elements gets large.
-
-Note that this time complexity only applies for a \textit{well-balanced} tree, or one that has an approximately equal number of nodes in both the left and right subtrees. An example of an unbalanced tree is one in which the tree's elements are strictly increasing. In this case, only right nodes are used, so the tree's structure will begin to approach that of a linked list, and the time complexity of searching will approach $O(n)$.
-
-
-\begin{figure}
+\begin{figure}[b]
 \centering
 \begin{tikzpicture}[very thick,level/.style={sibling distance=70mm/#1}]
 \node [vertex] (r){\texttt{"m"}}
@@ -310,40 +354,11 @@ Note that this time complexity only applies for a \textit{well-balanced} tree, o
 \label{fig:tree2}
 \end{figure}
 
+A \textbf{binary search tree}, or BST, is a type of binary tree that has been structured in a specific way to make it amenable to searching. Suppose we have some node $X$ with a value $v_X$. Then, for any of its children $C$, let its value of $v_C$. If $C$ is in the left subtree of $X$, then $v_C < v_X$. Otherwise, if $C$ is in the right subtree of $X$, then $v_C \geq v_X$. In other terms, everything in the left subtree of a given node has a lower value, and everything in the right subtree has a larger or equal value.
 
+To use a BST, we need to impose some kind of ordering on the elements that we store. As we discussed with sorting in section~\ref{sec:sorts}, the ordering is generally implementation-defined based on the type of the elements, and can be overridden.
 
-\section{Sets and Maps}
+When searching for an element in the BST, we can employ a binary search. First, we compare the value we're looking for with the value of the root node. Then, we select either the left or the right subtree based on the result of the comparison, and we perform the same comparison. This continues until we either find the value we're looking for or reach a leaf node and conclude the value isn't present. If we assume that with every iteration we cut the number of elements in half --- as with binary search --- then we can find the element we desire in $O(\log n)$ time. This is better than the $O(n)$ time complexity of the list structures especially as the number of elements gets large.
 
-\subsection{Sets}
-A \textbf{set} is a collection of \textit{unique} items. In other words, a set cannot have duplicate values --- if we try to insert an item into a set and it is already in the set, our action will have no effect. The operations we'd like to perform on a set are: add an item to the set, query whether the set contains an item, and remove an item from the set.
-
-One simple way to implement a set is to use a list, searching the list every time we insert an element to make sure it is not already in the list. However, this isn't particularly efficient; all operations take $O(n)$ time. We can do slightly better by sorting our list and using binary search, which reduces query time to $O(\log n)$.
-
-Similarly, rather than maintaining an order that can be controlled by the user, set implementations typically maintain an internal order that allows them to efficiently search for items based on their value. An \textbf{ordered set} keeps the items in sorted order, which can be obtained by iterating over the items in the set. In contrast, an \textbf{unordered set} may use some other ordering not directly related to the values of the items.
-
-
-\subsection{Maps}
-
-A \textbf{map} (or a \textbf{dictionary}, a \textbf{symbol table}, or an \textbf{associative array}) allows us to associate arbitrary \textit{keys} in the map with corresponding \textit{values}. In some sense, this is a generalization of a list, which associates an integer index with a value. To query a map, we provide it with a key, and ask for the value associated with that key. As a result, the keys must be unique, so that we know what to answer to a query. Note, however, values do \textit{not} have to be unique.
-
-Maps are also closely related to sets; the items in a set are analogous to the keys in the map. The difference is that a map allows us to associate each of those items with a value. Because sets and maps have nearly identical implementations, we'll mainly consider implementations of sets instead.
-
-
-\subsection{Ordered sets}
-
-A common implementation for ordered sets uses a \textit{binary search tree}, which maintains the order of its values. (We will discuss binary search trees in section~\ref{sec:bst}.) Searching for, adding, and removing an item can be accomplished in $O(\log n)$, where $N$ is the total number of elements in the set. The logarithm comes from the nature of the tree being used to keep track of the ordering of the set. Below you can see an example of an ordered set in Java being represented through a tree-based structure.
-
-\includegraphics[scale=0.5]{treeset.png}
-
-
-\subsection{Unordered sets}
-
-In many cases, however, we may actually want to use an unordered set instead. Why? Because while $O(\log n)$ time is pretty good, a \textbf{hash table} can do even better, implementing the same operations in $O(1)$ amortized time!
-
-Hash tables work by computing a \textit{hash}, an integer value produced by a \textit{hash function} based on the value of an item. This hash is then converted to an index in an array, where the item is stored. One major complication is dealing with \textit{collisions}, in which two different items produce the same hash, though we won't discuss how to deal with those here.
-
-Thanks to hashing, however, using an unordered set is nearly as fast as accessing elements in an array, which only takes $O(1)$. As with a dynamic array, however, we occasionally need to expand the size of a hash table, so the actual complexity is again amortized. In the representation below, you can see the hash table for this particular unordered set (notice the collision at index 0).
-
-\includegraphics[scale=0.64]{hashset.png} 
-
+Note that this complexity only applies for a \textit{well-balanced} tree, or one that has an approximately equal number of nodes in both the left and right subtrees. An example of an unbalanced tree is one in which the tree's elements are strictly increasing. In this case, only right nodes are used, so the tree's structure will begin to approach that of a linked list, and the time complexity of searching will approach $O(n)$.
 
