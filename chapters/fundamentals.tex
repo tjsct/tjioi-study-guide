@@ -2,10 +2,10 @@
 
 \section{Algorithms}
 
-In the field of computer science, programmers use \textbf{algorithms} to solve complicated problems. What is an algorithm? An algorithm is a procedure, or series of problem-solving operations, in order to accomplish a certain task. Algorithms can range from simple operations, such as finding the smallest value in an array, to incredibly complex jobs, such as Facebook's facial recognition or Google's PageRank.
+In the field of computer science, programmers use \textbf{algorithms} to solve complicated problems. An algorithm is a procedure, or series of problem-solving operations, in order to accomplish a certain task. The problems that algorithms solve can range from the simple, such as finding the maximum value in an array, to the incredibly complex, such as Facebook's facial recognition or Google's PageRank algorithms.
 
 \begin{algorithm}[H]
-\caption{Finding the Maximum Value in an Array}
+\caption{Finding the maximum value in an array}
 \begin{algorithmic}
 \State $M \gets 0$
 \ForAll{$a_i$ in $A$} \Comment iterate through elements of $A$
@@ -16,25 +16,29 @@ In the field of computer science, programmers use \textbf{algorithms} to solve c
 \end{algorithmic}
 \end{algorithm}
 
-For example, here is an algorithm to find the largest value in an array.  We assign a value of $ 0 $ to $ M $, and then \textbf{iterate} over the contents of the array. Iteration is a computer science term, meaning we examine each element of the array one at a time. While we iterate over the array, we check each value against our existing maximum value.  If the value is greater than the largest value we've already found, then we will update our maximum to reflect that value.  Once we have iterated over all elements in the array, we are guaranteed to have found the largest value in the array.
+For example, here is an example of the former: an algorithm to find the largest value in an array.  We assign a value of $ 0 $ to $ M $, and then \textbf{iterate} over each element of the array. While iterating over the array, we check each value against our existing maximum value.  If the value is greater than the largest value we've already found, then we will update our maximum to reflect that value.  Once we have iterated over all elements in the array, we will have found the largest value in the array.
 
-Note that this algorithm was not written in a formal programming language above, nor was it described in a programming language.  This is because an algorithm is an idea, not lines of code.  It is important to remember that before one writes code to accomplish a task, one first thinks through the problem, and comes up with a solution in words rather than code.  The language that one uses is merely the medium of communication to the computer: just as one can express the same ideas in English and French, an algorithm should be able to be implemented in Java, C/C++, Python, or any language.
+Note that the above algorithm was written in a form of \textit{pseudocode}, rather than a formal programming language.  This is because an algorithm is an idea, not lines of code. Before writing code to accomplish a task, you should first think through the problem and come up with a solution in words rather than in code. The programming language that you use is merely a medium of communication to the computer: just as one can express the same ideas in English and French, an algorithm should be able to be implemented in Java, C++, Python, or any other programming language.
+
 
 \section{Code efficiency}
 
-% TODO: properly link to algorithm 1
-Computers are very fast at running programs! You've probably written many programs that finish almost instantaneously. Yet push any program to its limits, and it will begin to run slowly. If adding two numbers together is fast, what if we wanted to add two billion of them together? Then we'd find out that computers aren't so instantaneous after all. Of course, it's unlikely that you'd need to process so many numbers, but with more complicated algorithms, you can imagine that we might have to do something more complicated than adding them up. Another problem we might run into when adding that many numbers is memory limitations; it turns out that two billion 32-bit integers will take up 8 GB! As a result, we need some way to quantify how long a program takes to execute, or its \textbf{computational complexity}, and how much memory it uses, or its \textbf{space complexity}.
+Computers are very fast at running programs! You've probably written many programs that finish almost instantaneously. Yet push any program to its limits, and it will begin to run slowly. Adding two numbers together takes mere nanoseconds. But what if we had to perform two billion additions? We'd quickly find out that computers aren't so instantaneous after all.
+
+Another problem we might run into when writing programs is memory limitations. If we decided to store the result of each of those two billion additions, each of which was a 32-bit integer, we would take up 8 GB of memory! At that point, we could risk running out of memory, depending on what computer we're using.
+
+In sum, we need some way to quantify how long a program takes to execute, or its \textbf{computational complexity}, and how much memory it uses, or its \textbf{space complexity}. We'll primarily discuss the former; however, we can use the same techniques to analyze the memory usage of programs.
 
 
-\subsection{Big-O Notation}
+\subsection{Big-O notation}
 
 % consider starting by counting operations?
-Big-O notation is one way we can describe the efficiency of an algorithm.  Think back to our first algorithm (finding the maximum in a list).  We examine each element of the array, one at a time.  Thus, if our array is of length $ n $, we will need $ n $ operations to complete our algorithm.  This is true regardless of the value of $ n $, so the operation is said to be $ O(n) $.  But what about the initial assignment? Shouldn't the algorithm be $ O(n + 1) $?  In computer science, we care about the efficiency when the data sets are \textbf{large}, and as $ n $ becomes large, the number of operations will grow at the same rate that $ n $ grows, and the $ 1 $ will become negligible.  We also only care about the \textbf{order} of the growth; that is, $ O(cn) $ is the same thing as $ O(n) $, where $ c $ is any constant factor.
+Big-O notation is one way we can describe the efficiency of an algorithm.  Think back to our first algorithm (finding the maximum value in a list).  We examine each element of the array, one at a time.  Thus, if our array is of length $ n $, we will need $ n $ operations to complete our algorithm.  This is true regardless of the value of $ n $, so the operation is said to be $ O(n) $.
+
+But what about the initial assignment? Shouldn't the algorithm be $ O(n + 1) $?  In computer science, we care about the efficiency when the data sets are \textbf{large}, and as $ n $ becomes large, the number of operations will grow at the same rate that $ n $ grows, and the $ 1 $ will become negligible.  We also only care about the \textbf{order} of the growth; that is, $ O(cn) $ is the same thing as $ O(n) $, where $ c $ is any constant factor.
 
 \begin{enumerate}
-    \item Count the number of operations the algorithm performs.
-    % todo: clarify / fix worst case?
-    \item Take the worst-case number of operations.
+    \item Count the number of operations\footnote{We define "operation" fairly loosely. Often, we count the number of array accesses or comparisons.} the algorithm performs.
     \item Take the fastest growing term.
     \item Drop any constant factors.
 \end{enumerate}
@@ -43,23 +47,18 @@ As you've probably realized, we lose a lot of information about the algorithm's 
 
 An algorithm grows only as fast as its slowest operation.  For example, a nested for-loop will be $ O(n^2) $, and so another for-loop afterwards with $ O(n) $ efficiency will be negligible compared to the nested loop.  Note that an algorithm with $ O(n^2) $ efficiency is not guaranteed to run slower than one of $ O(n) $, as the faster operations may have constant terms associated with them that are very large.  However, we know for certain that for sufficiently large data set size, the $ O(n^2) $ algorithm will be slower.
 
-% more like a footnote?
-Other common runtimes include $ O(\log n) $ or $ O(n\log n) $. A logarithm in the runtime usually denotes a recursive or binary search solution, topics that we will discuss later in this guide.\footnote{We might ask what the base of the logarithm is here. Although it is generally assumed to be 2, note that the difference between two logarithms in different bases is merely a constant factor, which we disregard in our complexity analysis.}
-
-In a more theoretical sense, one can determine the Big-O efficiency of an algorithm mathematically.  Given an algorithm, we can write some function, which takes the size of the data as input, and outputs the number of operations.  For example, consider an algorithm which loops over an array twice, then, for \textbf{each} element of the array, loops over the \textbf{entire} array three times, then loops over the first three terms of the array.  Then, assuming the length of our array is given by $ n $ (where $ n > 3 $), our function is given by $ f(n) = 2n + 3n^2 + 3 $.  We now define the Big-O efficiency of the function, $ O(g(n)) $, to be a function satisfying
+We can also determine the Big-O efficiency of an algorithm mathematically.  Given an algorithm, we can write some function $ f(n) $ which takes the size of the data as input, and outputs the number of operations.  For example, consider an algorithm which loops over an array twice, then, for \textbf{each} element of the array, loops over the \textbf{entire} array three times, then loops over the first three terms of the array.  Then, assuming the length of our array is given by $ n $ (where $ n > 3 $), our function is given by $ f(n) = 2n + 3n^2 + 3 $.  We now define the Big-O efficiency of the function, $ O(g(n)) $, to be a function satisfying
 $$ \lim_{n \to \infty}{\frac{|f(n)|}{|g(n)|}} = M $$ 
 where $ M $ is a finite, positive value.  In other words, $ f(n) $ grows on the order of $ g(n) $ where the exponent in the biggest term is the same for both functions.  Choosing $ g(n) = n^2 $ will result in a value of $ 3 $ for M, and so the function $ f(n) $ and the associated algorithm is said to be of order $ O(n^2) $.  Note that this choice of $ g(n) $ is not unique, but is the "simplest" choice.
 
-This process is similar to a leading term test, often used when taking the limit of a rational function in BC Calculus, in which the term that grows fastest "dominates" the rest as the independent variable becomes large. In simpler terms, everything but the largest degree term is ignored and all coefficients are dropped.
-
-As an example, consider the following algorithm:
+This process is similar to a leading term test, which you may have used when taking the limit of a rational function in a calculus class. The term that grows fastest "dominates" the rest as the independent variable becomes large. In simpler terms, everything but the largest degree term is ignored and all coefficients are dropped.
 
 \begin{algorithm}[H]
-\caption{Finding Pairs}
+\caption{Finding matching pairs}
 \begin{algorithmic}
 \State $ X \gets 0 $
 \ForAll{$a_i$ in $A$}
-    \ForAll{$a_j$ in $A$ and $ j > i $}
+    \ForAll{$a_j$ in $A$ where $ j > i $}
         \If{$a_i = a_j$}
             \State $X \gets X + 1$
         \EndIf
@@ -68,11 +67,14 @@ As an example, consider the following algorithm:
 \end{algorithmic}
 \end{algorithm}
 
+As an example, consider the above algorithm. What is its complexity?  We can see that there is one loop that iterates over the entire array $ A $, and another loop that iterates over all the elements after the first element chosen.  If both loops were over the entire array, then the algorithm would perform $ n^2 $ comparisons, and we would compare every pair twice: once for $ i = j $ and another time for $ j = i $.
 
-% Write pseudocode for such an algorithm?
-What is the efficiency of the algorithm?  We can see that there is one loop that iterates over the entire array $ A $, and another loop that iterates over all the elements after the first element chosen.  If both loops were over the entire array, then it would clearly be $ O(n^2) $, but in this case, the inner loop does not iterate over the entire array each time!  From this analysis, we can see that the efficiency of the program seems to be faster, as looping over the entire array in both loops means that we compare every pair twice, as for any $ i $ and $ j $, we will check $ i = j $ and $ j = i $, but looping the way we do in this algorithm ensures we check each pair only once.  This means that our program only needs half the number of operations as an $ O(n^2) $ algorithm!  Unfortunately, as we have previously discussed, when using Big-O analysis, we discard constant factors and only care about the order of the growth.  Despite only needing $ \frac{1}{2}n^2 $ operations, the number of operations still grows as $n^2$.  Thus, this algorithm is also $ O(n^2) $.
+In this case, however, the inner loop does not iterate over the entire array each time. Instead, we only check pairs for which $ i < j $. Looping in the way this algorithm does ensures we will only check each pair once. This means that our program only needs half the number of operations!
 
-\subsection{Program Speed}
+However, as we have previously discussed, when using Big-O analysis, we discard constant factors, only caring about the order of the growth.  Though this algorithm only needs $ \frac{1}{2}n^2 $ operations, the number of operations still grows as $n^2$.  Thus, the complexity of this algorithm is also $ O(n^2) $.
+
+
+\subsection{Program speed}
 
 \begin{figure}
 \centering
@@ -89,7 +91,7 @@ What is the efficiency of the algorithm?  We can see that there is one loop that
   Logarithmic  & $ O(\log n) $  & n/a\footnotemark[1] \\ \hline
   Constant     & $ O(1) $       & n/a\footnotemark[1] \\ \hline
 \end{tabular}
-\caption{Approximate input size for various complexities, based on 1 second of runtime.}
+\caption{Approximate input sizes for various complexities, given 1 s runtime.}
 \label{input-size-table}
 \end{figure}
 
@@ -97,20 +99,19 @@ What is the efficiency of the algorithm?  We can see that there is one loop that
 One of the largest differences between different programming languages is that some are faster than others.  For example, compiled languages like C and C++ are significantly faster than languages like Python.  Usually, contests will allow for different time limits based on the language used, but it is often best to choose a fast language as the increase in speed will more than compensate for the difference in time allotted.
 
 % todo: how much runtime do we have? how much does usaco?
-Another thing to keep in mind is that most problems have an intended solution, and the size of the test cases will reflect the efficiency of the intended solution.  Figure \ref{input-size-table} contains standard guidelines for time complexity, if we assume that our program has 1 second of runtime.
+Another thing to keep in mind is that most problems have an intended solution, and the size of the test cases will reflect the efficiency of the intended solution. Given a problem, one useful trick is that we can infer how efficient our algorithm needs to be by looking at the input size. Figure \ref{input-size-table} estimates the input size we can handle for each time complexity, if we assume that our program has one second of runtime.
 
 % mention 10^8 ops/sec here? though this looks more like 10^6
 % also constant factors obv are gonna have an effect
 
-
-When given a problem, by looking at the size of the test cases, we can infer how efficient our algorithm needs to be.  For example, consider the following problem:
-
 \begin{Problem}
-Devon has $ N $ cookies ($ 1 \leq N \leq 6000 $), each with between $ 0 $ and $ M $ chocolate chips ($ 1 \leq M \leq 1000000 $).  Devon would like to order these cookies by the number of chocolate chips they have, from most chocolate chips to least.  Please help Devon do so!
+Devon has $ N $ cookies ($ 1 \leq N \leq 6000 $), each with between $ 0 $ and $ M $ chocolate chips ($ 1 \leq M \leq 1,000,000 $).  Devon would like to order these cookies by the number of chocolate chips they have, from most chocolate chips to least.  Please help Devon do so!
 \end{Problem}
 
-Without solving the problem, we can guess that the intended solution will likely be $ O(n^2) $, which will give us some information regarding how we should approach this problem.  We know that this is the case as the number of cookies is bounded by $ 6000 $, which is approximately the limit for an $ O(n^2) $ solution.  Note that the number of chocolate chips does not matter, as we are only using that number as a tool for comparison.  Given this estimated complexity, we can infer that we can afford to use a nested for-loop in our solution, in which we run $ n $ operations $ n $ times each, for a total of $ n^2 $ operations. However, we would not be able to afford a triply nested for-loop, which would have a complexity of $ O(n^3) $.
+For example, consider the above problem. We can see immediately that the number of cookies is bounded by $ 6000 $, which is approximately the limit for an $ O(n^2) $ solution. As a result, without even solving the problem, we can guess that its intended solution will likely be $ O(n^2) $. Note that the number of chocolate chips does not matter, as we are only using that number as a tool for comparison.
 
-What if the number of cookies was bounded by $ 1 \leq N \leq 100000 $?  In that case, we must find a faster solution --- an $ O(n^2) $ solution will no longer be sufficient! In this case, we would need an $ O(n\log n) $ solution.  The correct solution for this problem is to use a sort, and there are many different ways to accomplish this task.  We will discuss sorts more expansively, as well as the runtimes, advantages, and disadvantages of each sort, in a later section.
+Our estimated complexity will hint at how we should approach the problem. We can infer that we can afford to use a nested for-loop in our solution, in which we run $ n $ operations $ n $ times each, for a total of $ n^2 $ operations. However, we would not be able to afford a triply nested for-loop with a complexity of $ O(n^3) $.
 
-\footnotetext[1]{Don't forget that generally you'll need to read the input values which will take linear time.}
+What if the number of cookies was bounded by $ 1 \leq N \leq 100,000 $?  In that case, we must find a faster solution --- an $ O(n^2) $ solution will no longer be sufficient! In this case, we would need an $ O(n\log n) $ solution.  The correct solution for this problem is to use a more efficient sorting algorithm, which we will discuss briefly in section~\ref{sec:sorts}.
+
+\footnotetext[1]{Don't forget that you'll generally need to read in input values, which takes linear time.}

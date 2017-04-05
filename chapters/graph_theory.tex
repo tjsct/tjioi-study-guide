@@ -3,15 +3,15 @@
 In Chapter 2, we discussed how we can represent the search space of a recursive, brute-force algorithm as a tree of states. This means that all recursive, brute-force algorithms basically perform the same thing: visit each child state and recur. In other words, we learned one way in which we can attack a specific problem using a nonspecific approach. In fact, many seemingly specific problems can be approached by using a variant of a generic algorithm. For these reasons, it is often useful to abstract specific problems into more general, mathematical objects, such as graphs. 
 
 
-\section{Definitions and Terminology}
+\section{Definitions and terminology}
 
-Formally, a \textbf{graph} consists of a set of \textit{vertices}, or nodes, and a set of \textit{edges}, where each edge connects two vertices. An \textit{undirected} graph is one in which every edge is bidirectional. In other words, if an edge connects vertex $A$ to vertex $B$, then it also connects $B$ to $A$. In contrast, an \textit{directed} graph is one in which every edge points in a single direction. Directed graphs are also commonly called \textit{digraphs}. Note, however, that it is possible for two directed edges to exist between two vertices. In a \textit{weighted} graph, each edge is associated with some weight. 
+Formally, a \textbf{graph} consists of a set of \textbf{vertices}, or \textbf{nodes}, and a set of \textbf{edges}, where each edge connects two vertices. An \textbf{undirected} graph is one in which every edge is bidirectional. In other words, if an edge connects vertex $A$ to vertex $B$, then it also connects $B$ to $A$. In contrast, an \textbf{directed} graph is one in which every edge points in a single direction. Directed graphs are also commonly called \textbf{digraphs}. Note, however, that it is possible for two directed edges to exist between two vertices. In a \textbf{weighted} graph, each edge is associated with some weight.
 
-Graphs can take on many unusual structures. For example, an edge is allowed to point from a vertex to itself. Graphs may also contain multiple edges between the same pair of vertices. For the sake of simplicity, we will only deal with graphs that contain no self loops and multiple edges in this chapter. This is because these cases usually serve very little purpose in solving actual problems. 
+Graphs can take on many unusual structures. For example, we may sometimes allow edges to point from a vertex to itself, known as a \textit{self-loop}. Graphs may also contain multiple edges between the same pair of vertices. For the sake of simplicity, we will not deal with graphs that contain self-loops and multiple edges in this chapter. This is because these cases usually serve little purpose in solving actual problems. 
 
-A \textbf{path} is a sequence of edges which connected a sequence of vertices.  If the first and last vertices in the sequence are the same, then we refer to the path as a \textbf{cycle}. For example, in Figure \ref{digraph-example}, $(E, F, C, H, C, G)$ is a valid path and $(H, E, F, A)$ is a valid cycle. Two vertices are said to be \textit{connected} if these exists a path between them. A connected graph is a graph in which all pairs of vertices are connected. 
+A \textbf{path} is a sequence of edges which connected a sequence of vertices.  If the first and last vertices in the sequence are the same, then we refer to the path as a \textbf{cycle}. For example, in figure~\ref{digraph-example}, $(E, F, C, H, C, G)$ is a valid path and $(H, E, F, A)$ is a valid cycle. Two vertices are said to be \textit{connected} if these exists a path between them. A connected graph is a graph in which all pairs of vertices are connected. 
 
-A \textbf{tree} is a special kind of undirected graph that contains no cycles. Trees are particularly useful because we can choose a single node to be the \textbf{root} of the tree. Then all edges in the tree are given a natural direction, namely towards the root. We will discuss trees more in-depth in a later chapter.
+A \textbf{tree} is a special kind of undirected graph that contains no cycles. Trees are particularly useful because we can choose a single node to be the \textbf{root} of the tree. Then all edges in the tree are given a natural direction, namely towards the root.
 
 \begin{figure}
 \centering
@@ -44,32 +44,13 @@ A \textbf{tree} is a special kind of undirected graph that contains no cycles. T
 \end{figure}
 
 
-\begin{comment}
-Roughly speaking, a {\bf graph} is a network of ``cities'' and ``roads.''
-Formally speaking, a graph is a collection of points called {\bf nodes} and segments that connect pairs of nodes called {\bf edges}.
-
-In computer science, graphs can be used to represent any abstract objects and their relations.
-Graph theory is heavy in vocabulary, but we will just go over the most important terms.
-
-In a {\bf undirected graph}, the edges are bidirectional, aka if one edge connects from node $A$ to node $B$, then it also connects from node $B$ to node $A$.
-Then in a {\bf directed graph}, the edges have a preferred direction that they are ``one-way roads.''
-
-A {\bf path} is sequence of nodes that are connected by distinct edges. 
-Intuitively speaking, a path is a route we drive from one city to another through roads.
-If a path has the same starting and ending nodes, then it is called a {\bf cycle}.
-A {\bf tree} is a graph which contains no cycle.
-
-A node is said to be {\bf reachable} from another node if there is a path between them.
-A {\bf complete graph} or {\bf clique} is a graph in which each node is reachable from every other node.
-\end{comment}
-
-
-
-\section{Representations of Graphs}
+\section{Representations of graphs}
 
 Before discussing graph algorithms, it is important to understand how to represent a graph so that we have access information efficiently. In this section, we will go over the two main graph representations and their respective advantages.
 
-For a graph with $V$ vertices, an \textit{adjacency matrix} is an $V$ by $V$ matrix $A$, where $A_{ij}$ (the entry in row $i$ and column $j$) represents the edge weight between vertices $i$ and $j$. It no edge exists between $i$ and $j$, then $A_{ij} = 0$. In an unweighted graph, we usually represent all of the edge weights as $1$. Note that in an undirected graph, $A$ would be symmetric about its main diagonal. Below is the adjacency matrix for the graph shown above. 
+\subsection{Adjacency matrices}
+
+For a graph with $V$ vertices, an \textit{adjacency matrix} is an $V \times V$ matrix $A$, where $A_{ij}$ (the entry in row $i$ and column $j$) represents the edge weight between vertices $i$ and $j$. It no edge exists between $i$ and $j$, then $A_{ij} = 0$. In an unweighted graph, we usually represent all of the edge weights as $1$. Note that in an undirected graph, $A$ would be symmetric about its main diagonal. Below is the adjacency matrix for the graph in figure~\ref{digraph-example}.
 
 \begin{center}
 \begin{minipage}{0.45\linewidth}
@@ -87,9 +68,11 @@ H        & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
 \end{minipage}
 \end{center}
 
-An adjacency matrix allows us to determine the edge weight or existence of an edge between two vertices in $O(1)$. Furthermore, we can get all neighbors of any vertex in $O(V)$ by looping across a row of the adjacency matrix. However, The adjacency matrix requires $O(V^2)$ space, which may be undesirable if the number of vertices is large (say, around $V = 2000$). This is also true when the graph is \textit{sparse}, or as relatively few edges. 
+An adjacency matrix allows us to determine the edge weight or existence of an edge between two vertices in $O(1)$. Furthermore, we can get all neighbors of any vertex in $O(V)$ by looping across a row of the adjacency matrix. However, an adjacency matrix requires $O(V^2)$ space, which may be undesirable if the number of vertices is large (say, around $V = 2000$). This is especially true when the graph is \textit{sparse}, or as relatively few edges. 
 
-We can also represent a graph as a list of sets, where each set contains the neighbors of an associated vertex. In an weighted graph, the sets contains pairs of vertices and their corresponding edge weights. Adjacency lists are less straightforward to implement than adjacency matrices; they are usually implemented as an array of dynamically allocated lists (which are usually provided in the standard library). Below is an adjacency list for the graph shown above. 
+\subsection{Adjacency lists}
+
+Alternatively, we can represent a graph as a list of sets, where each set contains the neighbors of an associated vertex. This is known as an \textbf{adjacency list}. In an weighted graph, the sets contains pairs of vertices and their corresponding edge weights. Adjacency lists are less straightforward to implement than adjacency matrices; they are usually implemented as an array of dynamically allocated lists (see \ref{sec:dynamic-array}). Below is an adjacency list for the graph shown above. 
 
 \begin{center}
 \begin{minipage}{0.45\linewidth}
@@ -106,24 +89,24 @@ H        & C \\
 \end{minipage}
 \end{center}
 
-An adjacency list usually scales better for large $N$ than an adjacency matrix because it requires $O(E)$ space complexity. In the worst case, we can also access all neighbors of any vertex in $O(V)$. The main disadvantage of an adjacency list, however, is that we cannot check the edge between any two vertices in $O(1)$. Fortunately, many algorithms do not requires constant time edge look-up, making adjacency lists an excellent choice for balancing both time and space complexity. 
+An adjacency list usually scales better for large $N$ than an adjacency matrix because it requires $O(V+E)$ space complexity. In the worst case, we can also access all neighbors of any vertex in $O(V)$. The main disadvantage of an adjacency list, however, is that we cannot find the edge between any two vertices in $O(1)$. Fortunately, many algorithms do not require constant-time edge look-up, making adjacency lists an excellent choice for balancing both time and space complexity. 
 
 
-\section{Graph Search Algorithms}
+\section{Graph search algorithms}
 
 In this section, we will apply what we've just discussed to learn a number of well-known graph algorithms. 
 
 
-\subsection{Tree traversal}
+\subsection{Search trees}
 
-In section \ref{recursive-search} we talked about using recursion to explore states, specifically in the case of generating permutations. We also represented those states as a search tree.
+In section~\ref{recursive-search}, we talked about using recursion to explore states, specifically in the case of generating permutations. We also represented those states as a search tree.
 
 In what order did we traverse that tree? We started at the root node, or level 0. Then we chose a node at level 1, and then another at level 2, and so on until we reached the bottom of the tree. At that point, we've reached one node on each of the levels, but no more. Only after that will we start to check other nodes on the same levels.
 
 Why does our recursive method behave like this? Let's say that every time we make a recursive call, we're visiting a node. So when we visit a permutation X, if we are able to we immediately generate a new permutation, we do so, and we visit the new permutation through a recursive call. Only after we get back to the original call do we generate other permutations. Thus, our use of recursion ensures that we examine the deeper elements first, which is why we call this \textit{depth first search}.
 
 
-\subsection{Depth First Search}
+\subsection{Depth-first search}
 
 We can use this same recursive strategy to traverse all nodes in a graph, by treating each node as a possible state and recurring on each of its neighbors.
 
@@ -152,7 +135,7 @@ We can apply depth-first search to a graph represented by an adjacency list, whi
 
 
 
-\subsection{Breadth First Search}
+\subsection{Breadth-first search}
 
 Another way to explore the tree is to go level by level, where level $k$ of a tree represents all nodes with depth $k$. We start at the root node at level 0. Next, we examine its children on level 1. Then, we examine the children of the nodes on level 1, which are on level 2, and so on. Similarly, we can explore a graph using the same strategy, if we ignore repeated nodes, just as we did for depth first search. How can we implement this in our code?
 
@@ -183,9 +166,9 @@ In fact, we can do this with only one array, $Q = A_0 + A_1 + ... + A_n$. While 
 \end{algorithm}
 
 
-\section{Shortest Paths}
+\section{Shortest paths}
 
-The shortest-paths problem comes up a lot in competitive programming. Given two nodes $u$ and $v$ in a directed graph, we want to find a path between $u$ and $v$ such that the sum of the edge weights of the path is minimized.
+The shortest-paths problem appears frequently in competitive programming. Given two nodes $u$ and $v$ in a directed graph, we want to find a path between $u$ and $v$ such that the sum of the edge weights of the path is minimized.
 
 \begin{center}
 \begin{tikzpicture}[very thick,edge from parent/.style={draw,<-},level/.style={sibling distance=30mm/#1},scale=0.8]
@@ -205,7 +188,7 @@ The shortest-paths problem comes up a lot in competitive programming. Given two 
 \end{center}
 
 
-\subsection{Floyd-Warshall}
+\subsection{Floyd-Warshall algorithm}
 
 The Floyd-Warshall algorithm solves the multi-source shortest paths problem; that is, it solves the shortest path problem for every pair of vertices. We use a matrix of distances $dist$, which stores the shortest distance we have found so far for each pair of vertices.
 
@@ -286,5 +269,5 @@ But why does it work? Every time we remove a vertex $u$ from $pq$, $dist(u)$ is 
 
 Suppose edge $e$ connects vertices $u$ and $v$. If $dist(v) > dist(u) + weight(e)$, then we define the process of \textit{relaxing} an edge $e$ as $dist(v) \gets dist(u) + weight(e)$.
 
-In the worst case, the algorithm will check every edge, and every edge will be relaxed. Each relaxation requires a priority queue insertion operation of complexity $O(\log V)$. Therefore, the complexity of Djikstra's Algorithm is $O(E \log V)$.
+In the worst case, the algorithm will check every edge, and every edge will be relaxed. Each relaxation requires a priority queue insertion operation of complexity $O(\log V)$. Therefore, the complexity of Djikstra's algorithm is $O(E \log V)$.
 
